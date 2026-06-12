@@ -1,3 +1,11 @@
+// ==================== DIAGNOSTIC GLOBAL ERROR HANDLING ====================
+window.addEventListener('error', (event) => {
+    console.error('Captured unhandled error:', event.error || event.message);
+    alert(`[Enso Debug Alert]\nError: ${event.message}\nFile: ${event.filename}\nLine: ${event.lineno}:${event.colno}`);
+});
+
+console.log('Enso script loaded successfully. Diagnostic logging active.');
+
 // ==================== SUPABASE INITIALIZATION ====================
 // Sanitize SUPABASE_URL by stripping any trailing slash that could break request formatting
 const SUPABASE_URL = (window.ENV?.SUPABASE_URL || '').trim().replace(/\/+$/, '');
@@ -5,13 +13,24 @@ const SUPABASE_ANON_KEY = (window.ENV?.SUPABASE_ANON_KEY || '').trim();
 
 let supabase = null;
 
+console.log('Supabase Config:', { SUPABASE_URL, hasKey: !!SUPABASE_ANON_KEY });
+
 // Initialize Supabase safely to prevent crashing if the library is blocked or failed to load
 if (SUPABASE_URL && SUPABASE_ANON_KEY) {
     if (window.supabase) {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('Supabase client initialized successfully.');
+        } catch (initErr) {
+            console.error('Error creating Supabase client:', initErr);
+            alert(`[Enso Client Init Error]\nMessage: ${initErr.message}`);
+        }
     } else {
         console.error('Supabase library (supabase-js) is not loaded or was blocked by an adblocker/network issue.');
+        alert('[Enso Library Error]\nThe Supabase database library failed to load. Please check if an adblocker is blocking npm/jsdelivr CDNs.');
     }
+} else {
+    console.warn('Supabase credentials not found in window.ENV.');
 }
 
 // ==================== SCROLL ANIMATIONS ====================
@@ -192,6 +211,8 @@ async function handleSubmit(e) {
 
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
+
+    console.log('Form submission intercepted. Data:', { name, email });
 
     // Hide any previous messages
     messageDiv.style.display = 'none';
