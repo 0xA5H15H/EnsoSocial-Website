@@ -11,7 +11,7 @@ console.log('Enso script loaded successfully. Diagnostic logging active.');
 const SUPABASE_URL = (window.ENV?.SUPABASE_URL || '').trim().replace(/\/+$/, '');
 const SUPABASE_ANON_KEY = (window.ENV?.SUPABASE_ANON_KEY || '').trim();
 
-let supabase = null;
+let supabaseClient = null;
 
 console.log('Supabase Config:', { SUPABASE_URL, hasKey: !!SUPABASE_ANON_KEY });
 
@@ -19,7 +19,7 @@ console.log('Supabase Config:', { SUPABASE_URL, hasKey: !!SUPABASE_ANON_KEY });
 if (SUPABASE_URL && SUPABASE_ANON_KEY) {
     if (window.supabase) {
         try {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('Supabase client initialized successfully.');
         } catch (initErr) {
             console.error('Error creating Supabase client:', initErr);
@@ -138,10 +138,10 @@ function dismissToast(toast) {
 
 // ==================== ERROR LOGGING ====================
 async function logError(errorCode, errorMessage, attemptedEmail) {
-    if (!supabase) return;
+    if (!supabaseClient) return;
 
     try {
-        await supabase
+        await supabaseClient
             .from('error_logs')
             .insert([{
                 error_code: errorCode || 'UNKNOWN',
@@ -231,7 +231,7 @@ async function handleSubmit(e) {
     }
 
     // Check if Supabase is initialized
-    if (!supabase) {
+    if (!supabaseClient) {
         showMessage('We\'re having trouble connecting right now. Please try again in a moment.', 'error');
         console.error('Supabase is not initialized. Check your environment variables.');
         await logError('SUPABASE_NOT_INIT', 'Supabase client not initialized', email);
@@ -253,7 +253,7 @@ async function handleSubmit(e) {
         }
 
         // Insert into Supabase
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('beta_signups')
             .insert([signupData]);
 
