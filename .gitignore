@@ -1,0 +1,21 @@
+# Environment variables (if you add local env for testing)
+.env
+.env.local
+env.js
+
+# Vercel
+.vercel
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+npm-debug.log*
