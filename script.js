@@ -1,12 +1,17 @@
 // ==================== SUPABASE INITIALIZATION ====================
-const SUPABASE_URL = window.ENV?.SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = window.ENV?.SUPABASE_ANON_KEY || '';
+// Sanitize SUPABASE_URL by stripping any trailing slash that could break request formatting
+const SUPABASE_URL = (window.ENV?.SUPABASE_URL || '').trim().replace(/\/+$/, '');
+const SUPABASE_ANON_KEY = (window.ENV?.SUPABASE_ANON_KEY || '').trim();
 
 let supabase = null;
 
-// Initialize Supabase only if credentials are available
+// Initialize Supabase safely to prevent crashing if the library is blocked or failed to load
 if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    if (window.supabase) {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } else {
+        console.error('Supabase library (supabase-js) is not loaded or was blocked by an adblocker/network issue.');
+    }
 }
 
 // ==================== SCROLL ANIMATIONS ====================
