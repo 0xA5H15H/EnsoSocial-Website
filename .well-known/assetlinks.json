@@ -7,7 +7,9 @@
     "target": {
       "namespace": "android_app",
       "package_name": "app.ensosocial",
-      "sha256_cert_fingerprints": ["REPLACE_ME_ANDROID_SHA256_FINGERPRINT"]
+      "sha256_cert_fingerprints": [
+        "D3:C8:31:60:61:2E:C9:B8:1B:75:0E:56:C3:3E:5A:DB:FB:28:12:DB:BF:BD:71:BF:DE:02:E1:56:54:22:81:1E"
+      ]
     }
   }
 ]
