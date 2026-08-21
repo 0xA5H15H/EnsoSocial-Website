@@ -1,0 +1,18 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["REPLACE_ME_APPLE_TEAM_ID.com.aashish.enso"],
+        "components": [
+          {
+            "/": "/c/*",
+            "comment": "Connect links open directly in ENSO"
+          }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["REPLACE_ME_APPLE_TEAM_ID.com.aashish.enso"]
+  }
+}
