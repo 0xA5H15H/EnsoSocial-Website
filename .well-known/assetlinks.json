@@ -6,7 +6,7 @@
     ],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.aashish.enso",
+      "package_name": "app.ensosocial",
       "sha256_cert_fingerprints": ["REPLACE_ME_ANDROID_SHA256_FINGERPRINT"]
     }
   }

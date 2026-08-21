@@ -2,7 +2,7 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["REPLACE_ME_APPLE_TEAM_ID.com.aashish.enso"],
+        "appIDs": ["REPLACE_ME_APPLE_TEAM_ID.app.ensosocial"],
         "components": [
           {
             "/": "/c/*",
@@ -13,6 +13,6 @@
     ]
   },
   "webcredentials": {
-    "apps": ["REPLACE_ME_APPLE_TEAM_ID.com.aashish.enso"]
+    "apps": ["REPLACE_ME_APPLE_TEAM_ID.app.ensosocial"]
   }
 }
