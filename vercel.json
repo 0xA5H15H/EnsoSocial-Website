@@ -46,11 +46,11 @@
   "rewrites": [
     {
       "source": "/c/:code",
-      "destination": "/connect.html"
+      "destination": "/connect"
     },
     {
       "source": "/g/:code",
-      "destination": "/group.html"
+      "destination": "/group"
     }
   ]
 }
