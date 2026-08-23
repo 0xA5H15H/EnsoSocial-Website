@@ -1,0 +1,224 @@
+        /* ==================== Legal Page Styles ==================== */
+        .legal-page {
+            padding: calc(var(--space-xxl) + 60px) 0 var(--space-xxl);
+        }
+
+        .legal-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .legal-header h1 {
+            font-family: 'Sora', sans-serif;
+            font-size: var(--h2);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .legal-updated {
+            color: var(--dim);
+            font-size: var(--small);
+        }
+
+        .legal-content {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .legal-content h2 {
+            font-family: 'Sora', sans-serif;
+            font-size: var(--h3);
+            font-weight: 600;
+            color: var(--fg);
+            margin-top: var(--space-xl);
+            margin-bottom: var(--space-sm);
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .legal-content h2:first-of-type {
+            margin-top: var(--space-lg);
+        }
+
+        .legal-content p {
+            color: var(--muted);
+            font-size: var(--body);
+            line-height: 1.8;
+            margin-bottom: var(--space-sm);
+        }
+
+        .legal-content ul {
+            list-style: none;
+            padding: 0;
+            margin: var(--space-sm) 0 var(--space-md);
+        }
+
+        .legal-content ul li {
+            color: var(--muted);
+            font-size: var(--body);
+            line-height: 1.8;
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .legal-content ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 20px;
+            line-height: 1.5;
+        }
+
+        .legal-content a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .legal-content a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        .legal-content strong {
+            color: var(--fg);
+            font-weight: 600;
+        }
+
+        /* Back link in nav */
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            color: var(--fg);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.02);
+            text-decoration: none;
+            font-size: var(--small);
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-back:hover {
+            border-color: var(--accent);
+            background: rgba(167, 139, 250, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .nav-back svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Data table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--space-md) 0;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .data-table thead th {
+            background: rgba(167, 139, 250, 0.08);
+            color: var(--fg);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            font-size: var(--small);
+            text-align: left;
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table tbody td {
+            color: var(--muted);
+            font-size: var(--small);
+            padding: 12px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tbody tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Contact box */
+        .legal-contact {
+            margin-top: var(--space-xl);
+            padding: var(--space-lg);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+
+        .legal-contact p {
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .legal-contact a {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: var(--body);
+        }
+
+        /* TLDR box */
+        .tldr-box {
+            margin-bottom: var(--space-lg);
+            padding: var(--space-lg);
+            background: rgba(167, 139, 250, 0.05);
+            border: 1px solid rgba(167, 139, 250, 0.15);
+            border-radius: var(--radius-lg);
+        }
+
+        .tldr-box h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .tldr-box p {
+            color: var(--muted);
+            font-size: var(--body);
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+/* Clauses Canadian courts expect to be brought to the consumer's attention
+   (assumption of risk, release, limitation of liability). Mirrors the in-app
+   emphasized rendering. */
+.legal-emphasized {
+    border: 1px solid var(--border, rgba(255,255,255,0.18));
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+}
+.legal-emphasized h2 { margin-top: 0; }
+.legal-emphasized p, .legal-emphasized li { font-weight: 500; }
+.legal-content section + section { margin-top: 1.25rem; }
+
+/* Open-in-app fallback pages (/c/<code>, /g/<code>). */
+.open-page { min-height: 70vh; display: flex; align-items: center; }
+.open-card { max-width: 520px; margin: 0 auto; text-align: center; padding: 2rem 1.5rem; }
+.open-card h1 { font-family: 'Sora', sans-serif; font-size: var(--h2); margin-bottom: .5rem; }
+.open-card p { color: var(--dim); margin-bottom: 1.25rem; }
+.open-actions { display: flex; flex-direction: column; gap: .75rem; align-items: stretch; }
+.open-actions a { display: inline-block; padding: .9rem 1.25rem; border-radius: 12px; text-decoration: none; font-weight: 600; }
+.open-primary { background: var(--fg, #fff); color: var(--bg, #000); }
+.open-secondary { border: 1px solid var(--border, rgba(255,255,255,0.18)); color: var(--fg, #fff); }

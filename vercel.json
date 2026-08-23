@@ -41,5 +41,16 @@
         }
       ]
     }
+  ],
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/c/:code",
+      "destination": "/connect.html"
+    },
+    {
+      "source": "/g/:code",
+      "destination": "/group.html"
+    }
   ]
 }
