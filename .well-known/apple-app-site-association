@@ -2,7 +2,7 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["REPLACE_ME_APPLE_TEAM_ID.app.ensosocial"],
+        "appIDs": ["U574ST7HHG.app.ensosocial"],
         "components": [
           {
             "/": "/c/*",
@@ -13,6 +13,6 @@
     ]
   },
   "webcredentials": {
-    "apps": ["REPLACE_ME_APPLE_TEAM_ID.app.ensosocial"]
+    "apps": ["U574ST7HHG.app.ensosocial"]
   }
 }
