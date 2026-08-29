@@ -275,6 +275,21 @@ if (form) {
     form.addEventListener('submit', handleSubmit);
 }
 
+// Inline email validation — flag on blur, clear as they type
+if (emailInput) {
+    emailInput.addEventListener('blur', () => {
+        const value = emailInput.value.trim();
+        const invalid = value !== '' && !isValidEmail(value);
+        emailInput.classList.toggle('invalid', invalid);
+        emailInput.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+    });
+
+    emailInput.addEventListener('input', () => {
+        emailInput.classList.remove('invalid');
+        emailInput.setAttribute('aria-invalid', 'false');
+    });
+}
+
 // ==================== DEVELOPMENT WARNINGS ====================
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {

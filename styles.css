@@ -23,12 +23,12 @@
     --space-md: 24px;
     --space-sm: 14px;
 
-    /* Typography */
-    --h1: clamp(40px, 7vw, 72px);
-    --h2: clamp(28px, 5vw, 48px);
-    --h3: clamp(20px, 3.5vw, 28px);
-    --body: clamp(16px, 1.6vw, 20px);
-    --small: clamp(13px, 1.4vw, 15px);
+    /* Typography — rem-based so layout scales with the user's text-size preference */
+    --h1: clamp(2.5rem, 7vw, 4.5rem);
+    --h2: clamp(1.75rem, 5vw, 3rem);
+    --h3: clamp(1.25rem, 3.5vw, 1.75rem);
+    --body: clamp(1rem, 1.6vw, 1.25rem);
+    --small: clamp(0.8125rem, 1.4vw, 0.9375rem);
 
     /* Layout */
     --max-width: 1200px;
@@ -113,10 +113,21 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+}
+
+/* Scroll-edge fade instead of a hard divider — content dissolves under the chrome */
+.header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 12px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent);
+    pointer-events: none;
 }
 
 .nav {
@@ -172,6 +183,11 @@ body {
     transform: translateY(-1px);
 }
 
+.nav-cta:active {
+    transform: scale(0.97);
+    transition-duration: 100ms;
+}
+
 /* ==================== Hero Section ==================== */
 .hero {
     position: relative;
@@ -199,18 +215,18 @@ body {
     transform: translate(-50%, -50%);
     background: radial-gradient(closest-side, rgba(167, 139, 250, 0.08), transparent 70%);
     border-radius: 50%;
-    animation: echo 8s ease-in-out infinite;
+    animation: echo 12s ease-in-out infinite;
     opacity: 0.5;
 }
 
 @keyframes echo {
     0%, 100% {
-        transform: translate(-50%, -50%) scale(0.92);
-        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(0.94);
+        opacity: 0.35;
     }
     50% {
-        transform: translate(-50%, -50%) scale(1.08);
-        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1.06);
+        opacity: 0.55;
     }
 }
 
@@ -230,9 +246,9 @@ body {
     font-family: 'Sora', sans-serif;
     font-size: var(--h1);
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.05;
     margin-bottom: var(--space-lg);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
 }
 
 .hero-subtitle {
@@ -278,7 +294,17 @@ body {
 }
 
 .cta-button:active {
-    transform: translateY(0);
+    transform: scale(0.97);
+    transition: transform 100ms ease-out;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.form-input:focus-visible {
+    outline: none; /* inputs carry their own focus treatment below */
 }
 
 .cta-button:disabled {
@@ -298,7 +324,21 @@ section {
     font-weight: 700;
     margin-bottom: var(--space-lg);
     text-align: center;
+    letter-spacing: -0.015em;
+}
+
+/* Size-specific tracking: card headings tighten slightly, small text opens up */
+.meet-card h3,
+.feed-feature h3,
+.removed-item h3,
+.list-heading {
     letter-spacing: -0.01em;
+}
+
+.form-note,
+.footer-bottom small,
+.post-lifespan {
+    letter-spacing: 0.01em;
 }
 
 .muted {
@@ -414,6 +454,11 @@ section {
     background: rgba(255, 255, 255, 0.06);
 }
 
+.form-input.invalid {
+    border-color: var(--error);
+    box-shadow: 0 0 0 4px rgba(255, 76, 106, 0.1);
+}
+
 .form-note {
     font-size: 12px;
     color: var(--dim);
@@ -499,13 +544,13 @@ section {
 /* ==================== Animations ==================== */
 /* Fade in animation for hero */
 .fade-in {
-    animation: fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: fadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(16px);
     }
     to {
         opacity: 1;
@@ -513,25 +558,57 @@ section {
     }
 }
 
-/* Scroll animations */
+/* Scroll animations — short travel, settled ease-out, never lagging the scroll */
 .animate-on-scroll {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Only hide if JS is loaded and animations are supported */
 @media (prefers-reduced-motion: no-preference) {
     .js-loaded .animate-on-scroll:not(.animated) {
         opacity: 0;
-        transform: translateY(40px);
+        transform: translateY(20px);
     }
 }
 
 .animate-on-scroll.animated {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Card groups rise with a subtle stagger when their section reveals */
+@media (prefers-reduced-motion: no-preference) {
+    .js-loaded .animate-on-scroll.animated .meet-card,
+    .js-loaded .animate-on-scroll.animated .feed-feature,
+    .js-loaded .animate-on-scroll.animated .removed-item {
+        animation: rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    }
+
+    .js-loaded .animate-on-scroll.animated .meet-card:nth-child(2),
+    .js-loaded .animate-on-scroll.animated .feed-feature:nth-child(2),
+    .js-loaded .animate-on-scroll.animated .removed-item:nth-child(2) {
+        animation-delay: 60ms;
+    }
+
+    .js-loaded .animate-on-scroll.animated .meet-card:nth-child(3),
+    .js-loaded .animate-on-scroll.animated .feed-feature:nth-child(3),
+    .js-loaded .animate-on-scroll.animated .removed-item:nth-child(3) {
+        animation-delay: 120ms;
+    }
+
+    .js-loaded .animate-on-scroll.animated .removed-item:nth-child(n+4) {
+        animation-delay: 180ms;
+    }
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
 }
 
 /* ==================== The Rule Section ==================== */
@@ -620,7 +697,8 @@ section {
     background: rgba(255, 255, 255, 0.02);
     border-left: 3px solid var(--accent);
     border-radius: var(--radius);
-    transition: all var(--transition);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                background var(--transition);
 }
 
 .feed-feature:hover {
@@ -725,7 +803,10 @@ section {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
     border-radius: var(--radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all var(--transition);
+    /* hover response quicker than surface changes */
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color var(--transition),
+                box-shadow var(--transition);
     text-align: left;
 }
 
@@ -789,8 +870,8 @@ section {
     padding: 16px 20px;
     border-radius: var(--radius);
     background: rgba(20, 20, 25, 0.95);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px) saturate(1.8);
+    -webkit-backdrop-filter: blur(16px) saturate(1.8);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     max-width: 420px;
@@ -967,4 +1048,35 @@ section {
 /* ==================== Dark Mode Preference ==================== */
 @media (prefers-color-scheme: light) {
     /* Keep dark theme regardless - this is intentional */
+}
+
+/* ==================== Transparency & Contrast Preferences ==================== */
+@media (prefers-reduced-transparency: reduce) {
+    .header {
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .toast-notification {
+        background: rgba(15, 15, 20, 0.98);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
+
+@media (prefers-contrast: more) {
+    :root {
+        --muted: #E4E6EA;
+        --dim: #B9BEC9;
+    }
+
+    .meet-card,
+    .feed-feature,
+    .removed-item,
+    .form-input,
+    .nav-cta,
+    .coming-badge {
+        border-color: rgba(255, 255, 255, 0.35);
+    }
 }
