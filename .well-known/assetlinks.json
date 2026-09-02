@@ -9,7 +9,8 @@
       "package_name": "app.ensosocial",
       "sha256_cert_fingerprints": [
         "89:9C:34:CB:0E:F6:22:B3:8C:AB:9D:B3:7F:C1:64:3E:21:F5:09:2D:65:DC:58:0B:92:6F:C7:99:7F:72:FD:DC",
-        "D3:C8:31:60:61:2E:C9:B8:1B:75:0E:56:C3:3E:5A:DB:FB:28:12:DB:BF:BD:71:BF:DE:02:E1:56:54:22:81:1E"
+        "D3:C8:31:60:61:2E:C9:B8:1B:75:0E:56:C3:3E:5A:DB:FB:28:12:DB:BF:BD:71:BF:DE:02:E1:56:54:22:81:1E",
+        "13:66:D8:0E:88:B9:E5:77:D5:BF:C6:06:C4:52:22:F1:25:26:11:D0:36:1F:3B:98:18:DE:B6:DD:CA:05:42:FD"
       ]
     }
   }
