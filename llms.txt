@@ -1,0 +1,20 @@
+# Enso
+
+> Enso ("The Quiet Network") is a private social app for family and real friends. No like counts, no followers, no algorithm, no search. Chats are end-to-end encrypted. There are exactly three ways to connect: scanning a code in person, a limited invite link, or an opt-in request to an exact username. Built in Toronto; currently in beta.
+
+## Pages
+
+- [Home](https://ensosocial.app/): What Enso is, how connecting works, post types (Stories, Moments, Memories), encrypted chats, the post-launch Map, and beta signup.
+- [Terms of Service](https://ensosocial.app/terms): The terms that govern use of ENSO.
+- [Privacy Policy](https://ensosocial.app/privacy): What personal information ENSO collects, why, and the choices users have (PIPEDA, Canada).
+- [Safety Tips](https://ensosocial.app/safety): Practical guidance for meeting people from the app in real life.
+- [Community Guidelines](https://ensosocial.app/community-guidelines): The conduct rules for everyone on ENSO.
+- [Law Enforcement Requests](https://ensosocial.app/law-enforcement): How ENSO handles lawful requests from authorities.
+- [Child Safety Standards](https://ensosocial.app/child-safety): ENSO's published standards against child sexual abuse and exploitation, and how to report it.
+- [Delete your account](https://ensosocial.app/delete-account): How to delete an ENSO account and what happens to the data.
+- [SMS opt-in](https://ensosocial.app/sms-opt-in): How users consent to receiving verification text messages from Enso.
+
+## Contact
+
+- Support: support@ensosocial.app
+- Privacy: privacy@ensosocial.app

@@ -293,10 +293,7 @@ if (emailInput) {
 // ==================== DEVELOPMENT WARNINGS ====================
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-        console.warn('⚠️ Supabase credentials not found. Please set up your environment variables.');
-        console.log('Copy env.example.js to env.js and add your Supabase credentials.');
-    } else {
-        console.log('✅ Supabase initialized successfully');
+        console.warn('Supabase credentials not found — copy env.example.js to env.js.');
     }
 }
 
@@ -311,14 +308,4 @@ document.addEventListener('keydown', (e) => {
         const toast = document.querySelector('.toast-notification');
         if (toast) dismissToast(toast);
     }
-});
-
-// ==================== PERFORMANCE ====================
-// Preload critical resources on hover (optional enhancement)
-const ctaButtons = document.querySelectorAll('.cta-button');
-ctaButtons.forEach(button => {
-    button.addEventListener('mouseenter', () => {
-        // Prefetch or prepare any resources needed for the signup form
-        // This is a placeholder for future optimizations
-    }, { once: true });
 });

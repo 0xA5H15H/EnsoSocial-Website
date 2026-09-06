@@ -7,6 +7,10 @@
           {
             "/": "/c/*",
             "comment": "Connect links open directly in ENSO"
+          },
+          {
+            "/": "/g/*",
+            "comment": "Group links open directly in ENSO"
           }
         ]
       }
