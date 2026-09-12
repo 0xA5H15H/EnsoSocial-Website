@@ -192,6 +192,12 @@
                 </div>
 
                 <div class="tour">
+                    <!-- Phones only: switch between the three post types over a single phone -->
+                    <div class="tour-tabs" role="tablist" aria-label="Post types">
+                        <button type="button" class="tour-tab is-active" role="tab" aria-selected="true">Stories</button>
+                        <button type="button" class="tour-tab" role="tab" aria-selected="false">Moments</button>
+                        <button type="button" class="tour-tab" role="tab" aria-selected="false">Memories</button>
+                    </div>
                     <div class="tour-visual" aria-hidden="true">
                         <div class="phone">
                             <div class="screen-stack">
@@ -259,7 +265,7 @@
                             <p>Lose both, and your chat history is gone — even we can't bring it back. That's the price of a lock nobody else has a key to, and we think it's worth paying.</p>
                         </div>
                     </details>
-                    <p>No ads scanning your words. Just talking, the way it used to feel.</p>
+                    <p class="hide-phone">No ads scanning your words. Just talking, the way it used to feel.</p>
                 </div>
 
                 <div class="chat-visual">
@@ -325,7 +331,8 @@
                     <div class="section-head">
                         <span class="badge">Coming soon</span>
                         <h2 class="display">And when you're ready to meet someone new — <em>there's the Map.</em></h2>
-                        <p>One extra screen, entirely optional. A map of real things happening near you, organized by real people. No influencer system, no promoter hierarchy — anyone can host.</p>
+                        <p class="hide-phone">One extra screen, entirely optional. A map of real things happening near you, organized by real people. No influencer system, no promoter hierarchy — anyone can host.</p>
+                        <p class="phone-only">One optional screen: real things happening near you, hosted by real people — ID-verified and built safe from day one.</p>
                     </div>
 
                     <div class="map-cards">
@@ -355,7 +362,7 @@
                         </div>
                     </details>
 
-                    <p class="aside-line">The social app comes first — because meeting new people works better when you have somewhere calm to bring them back to.</p>
+                    <p class="aside-line hide-phone">The social app comes first — because meeting new people works better when you have somewhere calm to bring them back to.</p>
                 </div>
             </div>
         </section>
@@ -427,9 +434,11 @@
                 <div class="founder-note">
                     <h2 class="display">Why I'm building this.</h2>
                     <p>I kept noticing the same thing everywhere. People sitting together, talking, but their minds still in the phone, scrolling stuff they themselves would call nothing. Everyone has a line ready. &ldquo;People post anything these days.&rdquo; &ldquo;I just use it a little.&rdquo; &ldquo;I'm not addicted.&rdquo; Usually said while scrolling. At meals, before sleep, first thing after waking up. I'm not judging anyone — I've been in some of those chairs myself.</p>
-                    <p>Every time I gave the apps another chance, the same thing happened. I'd install one, open it, and it would drop me straight into the part built to hold my attention. For a while I'd honestly forget that I never wanted to watch any of this. Even when I knew better, my mind would keep me stuck there — short videos, strangers' drama, other people showing off their lives. Some people will say I'm exaggerating. I think most of us have felt exactly this, whether we admit it or not.</p>
+                    <p class="hide-phone">Every time I gave the apps another chance, the same thing happened. I'd install one, open it, and it would drop me straight into the part built to hold my attention. For a while I'd honestly forget that I never wanted to watch any of this. Even when I knew better, my mind would keep me stuck there — short videos, strangers' drama, other people showing off their lives. Some people will say I'm exaggerating. I think most of us have felt exactly this, whether we admit it or not.</p>
                     <details class="read-more">
                         <summary>Read the full note</summary>
+                        <!-- On phones the second paragraph moves in here, so the note opens with just one -->
+                        <p class="phone-only">Every time I gave the apps another chance, the same thing happened. I'd install one, open it, and it would drop me straight into the part built to hold my attention. For a while I'd honestly forget that I never wanted to watch any of this. Even when I knew better, my mind would keep me stuck there — short videos, strangers' drama, other people showing off their lives. Some people will say I'm exaggerating. I think most of us have felt exactly this, whether we admit it or not.</p>
                         <p>And it's not entirely our fault. These are some of the biggest companies on earth, and they spend unbelievable amounts to keep things exactly this way — scientists and designers to push screen time up, influencers to keep the stage full, lawyers for when it goes wrong. They make money. A regular user just loses: focus, attention, the ability to sit with a bored moment, and somehow we end up more alone while being more &ldquo;connected&rdquo; than ever.</p>
                         <p>I tried quitting. In a sense I actually did. But quitting had its own cost — I lost touch with my friends' lives, because the only place they shared anything was the one place built to swallow me. And even what they shared wasn't really their life, just the show version of it.</p>
                         <p>So a thought showed up and refused to leave: can this even be challenged? For months my answer was no. One person, no experience, no budget, no partner, against an industry that eats anyone who tries. Then another thought: most people fail their first attempt anyway. If I'm probably going to fail, why not fail at the fight that actually matters? I had nothing to lose. So here I am.</p>
@@ -490,6 +499,14 @@
             </div>
         </section>
     </main>
+
+    <!-- Phones: a dismissible "Get the app" bar between the hero and the download section -->
+    <div class="app-bar" hidden>
+        <img src="./apple-touch-icon.png" alt="" width="180" height="180">
+        <div class="app-bar-text"><strong>Enso</strong><span>On the App Store</span></div>
+        <a class="btn btn-primary" href="https://apps.apple.com/app/id6805994959" rel="noopener">Get</a>
+        <button type="button" class="app-bar-close" aria-label="Dismiss">&times;</button>
+    </div>
 
     <!-- Footer -->
     <footer class="site-footer">

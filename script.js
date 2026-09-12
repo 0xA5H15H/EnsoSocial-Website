@@ -63,25 +63,78 @@ if (siteHeader) {
 }
 
 // ==================== POSTS TOUR ====================
-// The pinned phone shows whichever step sits in the middle of the viewport.
+// Wider screens: the pinned phone shows whichever step sits in the middle of the viewport.
+// Phones: a Stories | Moments | Memories switch over one phone. It turns on its own every 6s while
+// on screen, until the visitor taps a tab or swipes the phone — then it's theirs for the visit.
 const tour = document.querySelector('.tour');
 
 if (tour) {
     const steps = [...tour.querySelectorAll('.tour-step')];
     const screens = [...tour.querySelectorAll('.tour-screen')];
+    const tabs = [...tour.querySelectorAll('.tour-tab')];
+    const asSwitch = window.matchMedia('(max-width: 700px)');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let current = 0;
+    let autoTimer = null;
+    let inView = false;
+    let visitorTookOver = false;
 
     const setStep = (index) => {
+        current = index;
         steps.forEach((step, i) => step.classList.toggle('is-active', i === index));
         screens.forEach((screen, i) => screen.classList.toggle('is-current', i === index));
+        tabs.forEach((tab, i) => {
+            tab.classList.toggle('is-active', i === index);
+            tab.setAttribute('aria-selected', String(i === index));
+        });
     };
 
+    const syncAuto = () => {
+        const run = asSwitch.matches && inView && !visitorTookOver && !document.hidden && !reduceMotion.matches;
+        if (run && !autoTimer) autoTimer = setInterval(() => setStep((current + 1) % steps.length), 6000);
+        if (!run && autoTimer) {
+            clearInterval(autoTimer);
+            autoTimer = null;
+        }
+    };
+
+    const takeOver = (index) => {
+        visitorTookOver = true;
+        syncAuto();
+        setStep((index + steps.length) % steps.length);
+    };
+
+    tabs.forEach((tab, i) => tab.addEventListener('click', () => takeOver(i)));
+
+    // Swipe the phone left/right to move between steps
+    const visual = tour.querySelector('.tour-visual');
+    let touchX = null;
+    visual.addEventListener('touchstart', (event) => { touchX = event.touches[0].clientX; }, { passive: true });
+    visual.addEventListener('touchend', (event) => {
+        if (touchX === null || !asSwitch.matches) return;
+        const dx = event.changedTouches[0].clientX - touchX;
+        touchX = null;
+        if (Math.abs(dx) > 40) takeOver(current + (dx < 0 ? 1 : -1));
+    });
+
     const stepObserver = new IntersectionObserver((entries) => {
+        if (asSwitch.matches) return;   // on phones the switch decides, not the scroll position
         entries.forEach(entry => {
             if (entry.isIntersecting) setStep(steps.indexOf(entry.target));
         });
     }, { rootMargin: '-45% 0px -45% 0px' });
-
     steps.forEach(step => stepObserver.observe(step));
+
+    new IntersectionObserver(([entry]) => {
+        inView = entry.isIntersecting;
+        syncAuto();
+    }, { threshold: 0.3 }).observe(tour);
+
+    document.addEventListener('visibilitychange', syncAuto);
+    [asSwitch, reduceMotion].forEach(query => {
+        if (query.addEventListener) query.addEventListener('change', syncAuto);
+        else query.addListener(syncAuto);
+    });
 }
 
 // ==================== THEME CAROUSEL ====================
@@ -190,6 +243,11 @@ if (orbit) {
     let focused = false;
     let userPaused = false;
     let lastTop = -1;
+    // Pill row (phones/tablets): the explanations cycle every 7s until a pill is tapped
+    const PILL_EVERY = 7000;
+    let pillTimer = null;
+    let pillIndex = -1;
+    let pillTapped = false;
 
     const ellipse = orbit.querySelector('.orbit-path ellipse');
 
@@ -229,6 +287,22 @@ if (orbit) {
             frame = null;
         }
         toggle.hidden = !asRing.matches || reduceMotion.matches;
+
+        const cyclePills = !asRing.matches && inView && !pillTapped && !document.hidden && !reduceMotion.matches;
+        if (cyclePills && !pillTimer) {
+            if (pillIndex === -1) {
+                pillIndex = 0;
+                select(0);
+            }
+            pillTimer = setInterval(() => {
+                pillIndex = (pillIndex + 1) % nodes.length;
+                select(pillIndex);
+            }, PILL_EVERY);
+        }
+        if (!cyclePills && pillTimer) {
+            clearInterval(pillTimer);
+            pillTimer = null;
+        }
     };
 
     const layout = () => {
@@ -295,7 +369,14 @@ if (orbit) {
             focused = false;
             sync();
         });
-        node.addEventListener('click', () => select(i, true));
+        node.addEventListener('click', () => {
+            select(i, true);
+            if (!asRing.matches) {
+                pillIndex = i;
+                pillTapped = true;   // the visitor took over the pill row for this visit
+                sync();
+            }
+        });
     });
 
     toggle.addEventListener('click', () => {
@@ -309,6 +390,8 @@ if (orbit) {
         inView = entry.isIntersecting;
         sync();
     }, { threshold: 0.2 }).observe(orbit);
+
+    document.addEventListener('visibilitychange', sync);
 
     if (window.ResizeObserver) new ResizeObserver(layout).observe(orbit);
     else window.addEventListener('resize', layout);
@@ -324,6 +407,48 @@ if (orbit) {
     // then and after load — rather than relying solely on the ResizeObserver catching the change
     document.addEventListener('DOMContentLoaded', layout);
     window.addEventListener('load', layout);
+}
+
+// ==================== PHONE APP BAR ====================
+// Phones only: a small "Get the app" bar slides up once the hero has scrolled away and slides back
+// down before the download section (which has its own buttons). The × hides it for the rest of the
+// visit. Not shown on Android until the Play listing is live.
+const appBar = document.querySelector('.app-bar');
+
+if (appBar && !/android/i.test(navigator.userAgent)) {
+    const DISMISSED_KEY = 'enso-app-bar-dismissed';
+    let dismissed = false;
+    try { dismissed = sessionStorage.getItem(DISMISSED_KEY) === '1'; } catch (e) { /* storage blocked */ }
+
+    if (!dismissed) {
+        const hero = document.querySelector('.hero');
+        const download = document.querySelector('#download');
+        const onPhone = window.matchMedia('(max-width: 700px)');
+        let ticking = false;
+
+        const update = () => {
+            ticking = false;
+            const show = onPhone.matches
+                && hero.getBoundingClientRect().bottom < 0
+                && download.getBoundingClientRect().top > window.innerHeight;
+            appBar.classList.toggle('is-visible', show);
+        };
+
+        appBar.hidden = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                ticking = true;
+                requestAnimationFrame(update);
+            }
+        }, { passive: true });
+        update();
+
+        appBar.querySelector('.app-bar-close').addEventListener('click', () => {
+            appBar.classList.remove('is-visible');
+            setTimeout(() => { appBar.hidden = true; }, 450);
+            try { sessionStorage.setItem(DISMISSED_KEY, '1'); } catch (e) { /* storage blocked */ }
+        });
+    }
 }
 
 // ==================== SMOOTH SCROLL ====================
