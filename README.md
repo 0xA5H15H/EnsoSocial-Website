@@ -1,8 +1,10 @@
-# Enso Social — Waitlist Landing Page
+# Enso Social — Website
 
 > **"Your life, not a scoreboard."**
-> 
-> Enso is a social app built on real human interaction, requiring you to meet in person before connecting online. This is the waitlist landing page for the Toronto pilot launch.
+>
+> Enso is a private social app for family and real friends — no like counts, no followers, no algorithm, no search. This is the public site at [ensosocial.app](https://ensosocial.app): the landing page, legal pages, and the open-in-app fallbacks for connect and group links.
+>
+> The app is free on the [App Store](https://apps.apple.com/app/id6805994959); Android is coming soon to Google Play.
 
 ---
 
@@ -10,91 +12,46 @@
 
 ```text
 EnsoSocial-Website/
-├── index.html          # Main landing page with a modern dark theme
-├── styles.css          # Core styles, toast notifications, loading states & responsive layouts
-├── script.js           # Form handling, Supabase client client-side database interaction, validation
-├── env.js              # Environment credentials (gitignored)
-├── env.example.js      # Template showing expected environment keys
-├── build.sh            # Automated build script that generates env.js on Vercel
-├── vercel.json         # Vercel routing, build commands, and security headers
-├── terms.html          # User terms of service page
-├── privacy.html        # Privacy policy page
-└── .gitignore          # Rules to exclude environment files and cache from Git
+├── index.html              # Landing page
+├── home.css                # Landing page styles (only index.html loads it)
+├── assets/screens/         # App screenshots as WebP (640px wide), shown in CSS phone frames
+├── styles.css              # Shared styles for the legal, fallback and 404 pages
+├── legal.css               # Legal pages + open-in-app fallback cards
+├── script.js               # Scroll reveals, smooth scroll, iOS App Store links
+├── connect.html            # /c/:code fallback (noindex) — opens enso://c/<code>
+├── group.html              # /g/:code fallback (noindex) — opens enso://g/<code>
+├── terms.html, privacy.html, safety.html, community-guidelines.html,
+│   law-enforcement.html, child-safety.html
+│                           # GENERATED from the app repo (enso/scripts/export-legal) — don't edit here
+├── delete-account.html     # Required by Google Play
+├── sms-opt-in.html         # Required for SMS carrier registration
+├── .well-known/            # apple-app-site-association + assetlinks.json (universal links — don't move)
+├── vercel.json             # Clean URLs, /c and /g rewrites, security headers
+└── .vercelignore           # Keeps README, supabase/ etc. out of the deployment
+```
+
+The site is plain HTML/CSS/JS — no build step and no runtime dependencies.
+
+---
+
+## Local Development
+
+```bash
+# Closest to production (clean URLs + /c and /g rewrites)
+npx vercel dev
+
+# Quick static preview (use the .html paths, e.g. /privacy.html)
+python3 -m http.server 8000
 ```
 
 ---
 
-## Features
+## Deployment
 
-- **Premium Dark Design**: Fully custom palette using dynamic micro-animations, glassmorphism elements, and responsive layout scaling.
-- **Robust Client Validation**: Real-time form checks, visual error highlighting, and loading state animations.
-- **Supabase Integration**: Stores user sign-ups securely via client-side libraries.
-- **Error Tracking & Diagnostics**: Integrated client-side error reporter that logs submission failures directly to the database.
-- **Secured Credentials**: Environment variables are built dynamically during deployment to prevent accidental leaks.
-- **Legal Compliance Pages**: Custom matching Terms of Service and Privacy Policy pages.
+Push to `main`; Vercel deploys the repo root as-is.
 
 ---
 
-## Database Architecture
+## Retired: beta signup
 
-The project is backed by **Supabase (PostgreSQL)**, consisting of the following tables:
-
-### 1. `beta_signups`
-Stores waitlist signups.
-- `id` (UUID, Primary Key) - Auto-generated unique identifier
-- `name` (TEXT, Optional) - User's name
-- `email` (TEXT, Unique, Required) - User's email address
-- `signed_up_at` (TIMESTAMPTZ) - Auto-generated timestamp
-
-### 2. `error_logs`
-Logs failed signup attempts for developers to debug without exposing logs to the public client.
-- `id` (UUID, Primary Key) - Auto-generated unique identifier
-- `error_code` (TEXT) - SQL error code or connection status code
-- `error_message` (TEXT) - Technical details of the error
-- `attempted_email` (TEXT) - The email address attempted during signup
-- `user_agent` (TEXT) - Client browser environment information
-- `created_at` (TIMESTAMPTZ) - Auto-generated timestamp
-
-### Row-Level Security (RLS) Policies
-Both tables have RLS enabled with security rules applied:
-- `Allow public inserts`: Anyone (`anon` role) can submit new signups and report errors.
-- `Allow authenticated reads`: Only logged-in administrators/authenticated roles can query or view the database contents.
-
----
-
-## Local Development Setup
-
-To test the waitlist page locally on your computer:
-
-1. Create a copy of `env.example.js` and name it `env.js`:
-   ```bash
-   cp env.example.js env.js
-   ```
-2. Populate `env.js` with your active Supabase project credentials:
-   ```javascript
-   window.ENV = {
-       SUPABASE_URL: 'https://your-project-ref.supabase.co',
-       SUPABASE_ANON_KEY: 'your-public-anon-key'
-   };
-   ```
-3. Run a simple local server to preview the site:
-   ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx http-server
-   ```
-
----
-
-## Vercel Production Deployment
-
-The project is pre-configured to build securely on Vercel.
-
-1. Push your code to your GitHub repository.
-2. Link your repository in the **Vercel Dashboard**.
-3. Under **Project Settings > Environment Variables**, add:
-   - `SUPABASE_URL`: Your Supabase project URL
-   - `SUPABASE_ANON_KEY`: Your Supabase anon public API key
-4. Deploy the project. The custom `build.sh` script will automatically generate your `env.js` file dynamically on Vercel's build servers, keeping your API keys hidden from GitHub.
+Until September 2026 the landing page collected beta signups (name + email) straight into the Supabase `beta_signups` table, with failures logged to `error_logs`. The form has been removed now that the app is live. Those tables are pending cleanup once the launch emails to signups have gone out.

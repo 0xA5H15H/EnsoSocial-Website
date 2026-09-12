@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The quiet network. A private social app for the people who actually matter — no like counts, no followers, no algorithm, no search. End-to-end encrypted. Your life, not a scoreboard.">
+    <meta name="description" content="The quiet network, now on the App Store. A private social app for the people who actually matter — no like counts, no followers, no algorithm, no search. End-to-end encrypted. Your life, not a scoreboard.">
     <meta name="theme-color" content="#000000">
+    <meta name="apple-itunes-app" content="app-id=6805994959">
     <link rel="canonical" href="https://ensosocial.app/">
 
     <!-- Open Graph -->
     <meta property="og:title" content="Enso — A private social app for family and real friends">
-    <meta property="og:description" content="No like counts, no followers, no algorithm, no search. End-to-end encrypted. Your life, not a scoreboard.">
+    <meta property="og:description" content="Now on the App Store. No like counts, no followers, no algorithm, no search. End-to-end encrypted. Your life, not a scoreboard.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ensosocial.app/">
     <meta property="og:site_name" content="Enso">
@@ -21,21 +22,21 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Enso — A private social app for family and real friends">
-    <meta name="twitter:description" content="No like counts, no followers, no algorithm, no search. End-to-end encrypted. Your life, not a scoreboard.">
+    <meta name="twitter:description" content="Now on the App Store. No like counts, no followers, no algorithm, no search. End-to-end encrypted. Your life, not a scoreboard.">
     <meta name="twitter:image" content="https://ensosocial.app/og-card.jpg">
 
     <title>Enso — The Quiet Network</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./home.css">
+    <link rel="preload" as="image" href="./assets/screens/feed.webp" type="image/webp">
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon.png">
     <link rel="shortcut icon" href="./favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
     <link rel="manifest" href="./site.webmanifest">
 
     <script type="application/ld+json">
@@ -64,14 +65,13 @@
         {
           "@type": "MobileApplication",
           "name": "ENSO",
-          "operatingSystem": "iOS, Android",
+          "operatingSystem": "iOS",
           "applicationCategory": "SocialNetworkingApplication",
           "description": "A private social app for family and real friends. No like counts, no followers, no algorithm, no search. End-to-end encrypted.",
           "url": "https://ensosocial.app/",
           "downloadUrl": "https://apps.apple.com/app/id6805994959",
           "sameAs": [
-            "https://apps.apple.com/app/id6805994959",
-            "https://play.google.com/store/apps/details?id=app.ensosocial"
+            "https://apps.apple.com/app/id6805994959"
           ],
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CAD" },
           "author": { "@id": "https://ensosocial.app/#org" }
@@ -81,295 +81,458 @@
     </script>
 </head>
 <body>
-    <!-- Skip link for accessibility -->
-    <a href="#signup" class="skip-link">Skip to signup</a>
+    <a href="#download" class="skip-link">Skip to download</a>
 
     <!-- Header -->
-    <header class="header">
-        <nav class="nav">
-            <a href="#" class="nav-brand">
-                <img src="./ENSO-BG-Removed.png" alt="Enso" class="logo-img" width="500" height="500">
+    <header class="site-header">
+        <nav class="container nav" aria-label="Main">
+            <a href="#top" class="nav-logo" aria-label="Enso home">
+                <img src="./ENSO-BG-Removed.png" alt="" width="500" height="500">
             </a>
-            <a href="#signup" class="nav-cta">Join the Beta</a>
+            <ul class="nav-links">
+                <li><a href="#connect">How it works</a></li>
+                <li><a href="#privacy">Privacy</a></li>
+                <li><a href="#story">Our story</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <a href="#download" class="btn btn-small" data-ios-store>Download</a>
         </nav>
     </header>
 
-    <!-- Main Content -->
-    <main>
+    <main id="top">
         <!-- Hero -->
         <section class="hero">
-            <div class="hero-pulse" aria-hidden="true"></div>
-            <div class="container">
-                <div class="hero-content fade-in">
-                    <img src="./ENSO-BG-Removed.png" alt="" class="hero-logo" aria-hidden="true" width="500" height="500">
-                    <h1 class="hero-title">The Quiet Network.</h1>
-                    <p class="hero-subtitle">Enso is a private social app for family and real friends. No likes to count, no followers to grow, no algorithm deciding what you see — and no one can find you unless you let them in.</p>
-                    <p class="hero-kicker">Your life, not a scoreboard.</p>
-                    <a href="#signup" class="cta-button">Join the Beta</a>
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <p class="status-pill" style="--i:0"><span class="status-dot" aria-hidden="true"></span>Now on the App Store</p>
+                    <h1 class="display" style="--i:1">The Quiet <em>Network.</em></h1>
+                    <p class="lede" style="--i:2">Enso is a private social app for family and real friends. No likes to count, no followers to grow, no algorithm deciding what you see — and no one can find you unless you let them in.</p>
+                    <p class="hero-kicker" style="--i:3">Your life, not a scoreboard.</p>
+                    <div class="store-actions" style="--i:4">
+                        <a href="https://apps.apple.com/app/id6805994959" class="btn btn-primary" rel="noopener">Download on the App Store</a>
+                        <span class="btn btn-soon" aria-disabled="true">Google Play &middot; Coming soon</span>
+                    </div>
+                    <p class="availability" style="--i:5">Available on iPhone &middot; Sign-up open in Canada, the US and India</p>
+                </div>
+
+                <div class="hero-visual">
+                    <figure class="phone">
+                        <img src="./assets/screens/feed.webp" width="640" height="1387" fetchpriority="high" alt="The Enso home feed: your story, then posts from Lily marked Fading — with no like counts under them.">
+                    </figure>
                 </div>
             </div>
         </section>
 
-        <!-- The Rule -->
-        <section class="rule-section animate-on-scroll">
-            <div class="container">
-                <h2 class="section-title">No one can find you here.</h2>
-                <p class="section-subtitle">There is no search bar. No suggested friends. No &ldquo;people you may know.&rdquo; No friend-of-friend discovery. We didn't forget to build these — we refused to.</p>
-                <p class="section-subtitle">On Enso, there are exactly three ways to connect:</p>
+        <!-- Principles -->
+        <div class="principles" aria-label="What Enso promises">
+            <ul class="container">
+                <li>No ads</li>
+                <li>No like counts</li>
+                <li>No algorithm</li>
+                <li>No public profiles</li>
+                <li>End-to-end encrypted chats</li>
+            </ul>
+        </div>
 
-                <div class="meet-ways">
-                    <div class="meet-card">
-                        <h3>Meet in person</h3>
-                        <p class="muted">Scan each other's code — it expires in two minutes. Two people, one moment, both choosing.</p>
+        <!-- How you connect -->
+        <section class="animate-on-scroll">
+            <div class="container connect-grid" id="connect">
+                <div>
+                    <div class="section-head">
+                        <span class="eyebrow">How you connect</span>
+                        <h2 class="display">No one can find you <em>here.</em></h2>
+                        <p>There is no search bar. No suggested friends. No &ldquo;people you may know.&rdquo; We didn't forget to build these — we refused to. There are exactly four ways in: two in person, two from afar.</p>
                     </div>
-                    <div class="meet-card">
-                        <h3>Send an invite</h3>
-                        <p class="muted">For the people who already matter but aren't in the room — your mom in another city, your oldest friend abroad. You send the link deliberately, they send a connection request, you accept. Both sides choose, every time. Invites are limited, so nobody can mass-add strangers.</p>
-                    </div>
-                    <div class="meet-card">
-                        <h3>Ask by username</h3>
-                        <p class="muted">For when someone gives you their @name and nothing else. No search — you type the exact username, they get a request, they decide. Receiving these is off by default, so nobody can ping you out of nowhere; turn it on when you want to be reachable, and change your username when you need to.</p>
+                    <div class="connect-cards stagger">
+                        <article class="card" style="--i:0">
+                            <span class="card-tag">In person</span>
+                            <h3>Tap Nearby</h3>
+                            <p>Hold your phones close. You each see who you found, and you each decide — approve on the spot, or decide later.</p>
+                        </article>
+                        <article class="card" style="--i:1">
+                            <span class="card-tag">In person</span>
+                            <h3>Scan a code</h3>
+                            <p>Show your QR code or scan theirs. It expires in two minutes — two people, one moment, both choosing.</p>
+                        </article>
+                        <article class="card" style="--i:2">
+                            <span class="card-tag">From afar</span>
+                            <h3>Send an invite</h3>
+                            <p>For the people who matter but aren't in the room. Invites are limited, and both sides accept — every time.</p>
+                        </article>
+                        <article class="card" style="--i:3">
+                            <span class="card-tag">From afar</span>
+                            <h3>Ask by username</h3>
+                            <p>Type an exact @name and they decide. Receiving requests is off by default, so nobody can reach you out of nowhere.</p>
+                        </article>
                     </div>
                 </div>
 
-                <p class="section-subtitle">That's it. No cold DMs. No profile stalking. No inbox full of people you've never met.</p>
-                <p class="tagline-emphasis">If they're not in your life, they're not in your Enso.</p>
+                <div class="phone-pair">
+                    <figure class="phone">
+                        <img src="./assets/screens/connect-code.webp" width="640" height="1387" loading="lazy" decoding="async" alt="Enso's My Code screen: a QR code that expires in under a minute.">
+                    </figure>
+                    <figure class="phone">
+                        <img src="./assets/screens/connect-tap.webp" width="640" height="1387" loading="lazy" decoding="async" alt="Enso's Connect screen: Tap phones to connect — works between iPhone and Android.">
+                    </figure>
+                </div>
+            </div>
+            <div class="container">
+                <p class="tagline">If they're not in your life, they're not in your Enso.</p>
+                <p class="aside-line">No cold DMs. No profile stalking. No inbox full of people you've never met.</p>
             </div>
         </section>
 
         <!-- Stories, Moments, Memories -->
-        <section class="posts-section animate-on-scroll">
+        <section id="posts" class="animate-on-scroll">
             <div class="container">
-                <h2 class="section-title">Post like a person, not a brand.</h2>
-                <p class="section-subtitle">Three kinds of posts. Three lifespans. You choose how long things live.</p>
+                <div class="section-head center">
+                    <span class="eyebrow">Posting</span>
+                    <h2 class="display">Post like a person, <em>not a brand.</em></h2>
+                    <p>Three kinds of posts. Three lifespans. You choose how long things live.</p>
+                </div>
 
-                <div class="feed-features">
-                    <div class="feed-feature">
-                        <span class="post-lifespan">24 hours</span>
-                        <h3>Stories</h3>
-                        <p class="muted">The everyday stuff. Here today, gone tomorrow, like it should be.</p>
+                <div class="tour">
+                    <div class="tour-visual" aria-hidden="true">
+                        <div class="phone">
+                            <div class="screen-stack">
+                                <img class="tour-screen is-current" src="./assets/screens/feed.webp" width="640" height="1387" loading="lazy" decoding="async" alt="">
+                                <img class="tour-screen" src="./assets/screens/moments.webp" width="640" height="1387" loading="lazy" decoding="async" alt="">
+                                <img class="tour-screen" src="./assets/screens/profile.webp" width="640" height="1387" loading="lazy" decoding="async" alt="">
+                            </div>
+                        </div>
                     </div>
-                    <div class="feed-feature">
-                        <span class="post-lifespan">7 days</span>
-                        <h3>Moments</h3>
-                        <p class="muted">Worth more than a day, but not forever. A Moment slowly fades over the week, then quietly leaves everyone else's view. It stays on your own profile — only you can see it — like a journal nobody else reads.</p>
-                    </div>
-                    <div class="feed-feature">
-                        <span class="post-lifespan">Forever</span>
-                        <h3>Memories</h3>
-                        <p class="muted">The ones that matter. Memories live on your profile permanently, visible to all your connections. Over the years they become something no other app gives you: a memory lane of your actual life — for your people, and no one else.</p>
+
+                    <div class="tour-steps">
+                        <article class="tour-step is-active">
+                            <div class="lifespan">
+                                <span class="lifespan-label">24 hours</span>
+                                <div class="lifespan-track"><div class="lifespan-fill" style="--fill:0.1"></div></div>
+                            </div>
+                            <h3 class="display">Stories</h3>
+                            <p>The everyday stuff. Here today, gone tomorrow, like it should be.</p>
+                            <figure class="phone tour-inline">
+                                <img src="./assets/screens/feed.webp" width="640" height="1387" loading="lazy" decoding="async" alt="The Enso feed with your story at the top.">
+                            </figure>
+                        </article>
+                        <article class="tour-step">
+                            <div class="lifespan">
+                                <span class="lifespan-label">7 days</span>
+                                <div class="lifespan-track"><div class="lifespan-fill fades" style="--fill:0.45"></div></div>
+                            </div>
+                            <h3 class="display">Moments</h3>
+                            <p>Worth more than a day, but not forever. A Moment slowly fades over the week, then quietly leaves everyone else's view. It stays on your own profile — only you can see it — like a journal nobody else reads.</p>
+                            <figure class="phone tour-inline">
+                                <img src="./assets/screens/moments.webp" width="640" height="1387" loading="lazy" decoding="async" alt="My Moments: posts from the past week, each marked Fading.">
+                            </figure>
+                        </article>
+                        <article class="tour-step">
+                            <div class="lifespan">
+                                <span class="lifespan-label">Forever</span>
+                                <div class="lifespan-track"><div class="lifespan-fill forever" style="--fill:1"></div></div>
+                            </div>
+                            <h3 class="display">Memories</h3>
+                            <p>The ones that matter. Memories live on your profile permanently, visible to all your connections. Over the years they become something no other app gives you: a memory lane of your actual life — for your people, and no one else.</p>
+                            <figure class="phone tour-inline">
+                                <img src="./assets/screens/profile.webp" width="640" height="1387" loading="lazy" decoding="async" alt="A profile with its Memories & Moments grid — and no follower count.">
+                            </figure>
+                        </article>
                     </div>
                 </div>
 
-                <p class="posts-note">No like counts under any of it. Reactions come from people, with names and faces — your sister loved it, your best friend laughed. Not a number. Never a score.</p>
-                <p class="posts-note dim">Post text, photos, or video. Everything goes to your connections and no one else.</p>
+                <p class="note">No like counts under any of it. Reactions come from people, with names and faces — your sister loved it, your best friend laughed. Not a number. Never a score.</p>
+                <p class="note note-dim">Post text, photos, or video. Everything goes to your connections and no one else.</p>
             </div>
         </section>
 
         <!-- Chats -->
-        <section class="chats-section animate-on-scroll">
-            <div class="container">
-                <div class="prose-block">
-                    <h2 class="section-title">Conversations that belong to you.</h2>
+        <section id="chats" class="animate-on-scroll">
+            <div class="container chats-grid">
+                <div class="prose">
+                    <span class="eyebrow">Messages</span>
+                    <h2 class="display" style="margin:16px 0 28px">Conversations that <em>belong to you.</em></h2>
                     <p>Every chat on Enso is end-to-end encrypted. Messages are scrambled on your phone and unscrambled on theirs — nobody in between can read them.</p>
-                    <p class="prose-emphasis">Not us. Not ever. We couldn't hand your messages over if we wanted to — all we hold is ciphertext.</p>
-                    <p>New phone? Your PIN unlocks your backup. It works together with a key Enso holds, and Enso destroys that key after ten wrong guesses. Your recovery phrase is different: generated on your phone, never sent to us, the one key that is yours alone. Forgot the PIN? The phrase gets you back in. Think it leaked? Regenerate it in one tap; the old one dies instantly, your history stays intact.</p>
-                    <p>Lose both, and your chat history is gone — even we can't bring it back. That's the price of a lock nobody else has a key to, and we think it's worth paying.</p>
+                    <p class="emphasis">Not us. Not ever. We couldn't hand your messages over if we wanted to — all we hold is ciphertext.</p>
+                    <details class="disclosure">
+                        <summary>How backups work</summary>
+                        <div class="disclosure-body">
+                            <p>New phone? Your PIN unlocks your backup. It works together with a key Enso holds, and Enso destroys that key after ten wrong guesses. Your recovery phrase is different: generated on your phone, never sent to us, the one key that is yours alone. Forgot the PIN? The phrase gets you back in. Think it leaked? Regenerate it in one tap; the old one dies instantly, your history stays intact.</p>
+                            <p>Lose both, and your chat history is gone — even we can't bring it back. That's the price of a lock nobody else has a key to, and we think it's worth paying.</p>
+                        </div>
+                    </details>
                     <p>No ads scanning your words. Just talking, the way it used to feel.</p>
+                </div>
+
+                <div class="chat-visual">
+                    <figure class="shot-card">
+                        <img src="./assets/screens/chat-header.webp" width="640" height="451" loading="lazy" decoding="async" alt="A chat with Lily Reyes, marked E2E encrypted.">
+                    </figure>
+                    <div class="cipher" aria-hidden="true">
+                        <span class="cipher-node">Your phone</span>
+                        <span class="cipher-line"><span class="cipher-text">7f3a c91e 04bd</span></span>
+                        <span class="cipher-node">Their phone</span>
+                    </div>
+                    <p class="cipher-caption">In between, it's only ciphertext — including on our servers.</p>
                 </div>
             </div>
         </section>
 
-        <!-- What's Missing (On Purpose) -->
-        <section class="removed-section animate-on-scroll">
+        <!-- What's missing -->
+        <section id="missing" class="animate-on-scroll">
             <div class="container">
-                <h2 class="section-title">What's Missing (On Purpose)</h2>
-                <p class="section-subtitle">We deleted the worst parts of social media before writing a single line of code.</p>
-
-                <div class="removed-grid">
-                    <div class="removed-item">
-                        <h3>No follower counts</h3>
-                        <p>You are not a number.</p>
-                    </div>
-                    <div class="removed-item">
-                        <h3>No like counts</h3>
-                        <p>Post what you like, not what performs.</p>
-                    </div>
-                    <div class="removed-item">
-                        <h3>No algorithm</h3>
-                        <p>Your feed is your people, in order. That's it.</p>
-                    </div>
-                    <div class="removed-item">
-                        <h3>No infinite scroll</h3>
-                        <p>The feed ends. Go live your life.</p>
-                    </div>
-                    <div class="removed-item">
-                        <h3>No search</h3>
-                        <p>You can't be found. You can only be let in.</p>
-                    </div>
-                    <div class="removed-item">
-                        <h3>No influencers</h3>
-                        <p>Nobody here is performing for an audience.</p>
-                    </div>
-                    <div class="removed-item">
-                        <h3>No trending page</h3>
-                        <p>Your life doesn't need to compete with the internet's.</p>
-                    </div>
-                    <div class="removed-item">
-                        <h3>No location tracking</h3>
-                        <p>Enso never shares where you are. Ever.</p>
-                    </div>
+                <div class="section-head center">
+                    <span class="eyebrow">By design</span>
+                    <h2 class="display">What's missing <em>(on purpose).</em></h2>
+                    <p>We deleted the worst parts of social media before writing a single line of code.</p>
                 </div>
 
-                <p class="removed-tagline">Everything that turns people into metrics and moments into performances — gone.</p>
-                <p class="section-subtitle">What's left is just you and the people who actually know you.</p>
+                <div class="bento stagger">
+                    <article class="card wide" style="--i:0"><h3 class="strike"><span class="visually-hidden">No </span>Follower counts</h3><p>You are not a number.</p></article>
+                    <article class="card" style="--i:1"><h3 class="strike"><span class="visually-hidden">No </span>Like counts</h3><p>Post what you like, not what performs.</p></article>
+                    <article class="card" style="--i:2"><h3 class="strike"><span class="visually-hidden">No </span>Algorithm</h3><p>Your feed is your people, in order. That's it.</p></article>
+                    <article class="card" style="--i:3"><h3 class="strike"><span class="visually-hidden">No </span>Infinite scroll</h3><p>The feed ends. Go live your life.</p></article>
+                    <article class="card" style="--i:4"><h3 class="strike"><span class="visually-hidden">No </span>Search</h3><p>You can't be found. You can only be let in.</p></article>
+                    <article class="card wide" style="--i:5"><h3 class="strike"><span class="visually-hidden">No </span>Influencers</h3><p>Nobody here is performing for an audience.</p></article>
+                    <article class="card wide" style="--i:6"><h3 class="strike"><span class="visually-hidden">No </span>Trending page</h3><p>Your life doesn't need to compete with the internet's.</p></article>
+                    <article class="card wide" style="--i:7"><h3 class="strike"><span class="visually-hidden">No </span>Location tracking</h3><p>Enso never shares where you are. Ever.</p></article>
+                </div>
+
+                <p class="tagline">What's left is just you and the people who actually know you.</p>
+            </div>
+        </section>
+
+        <!-- Themes -->
+        <section id="themes" class="animate-on-scroll">
+            <div class="container">
+                <div class="section-head center">
+                    <span class="eyebrow">Make it yours</span>
+                    <h2 class="display">Calm, in <em>your</em> colours.</h2>
+                    <p>22 skins — from quiet denim to full-bloom sakura — plus alternate app icons. Same calm app, your kind of look.</p>
+                </div>
+                <div class="theme-fan" role="list" aria-label="Enso skins">
+                    <figure class="phone" role="listitem" data-slot="0"><img src="./assets/screens/theme-denim.webp" width="640" height="1387" loading="lazy" decoding="async" alt="Denim skin"></figure>
+                    <figure class="phone" role="listitem" data-slot="1"><img src="./assets/screens/theme-tweed.webp" width="640" height="1387" loading="lazy" decoding="async" alt="Tweed skin"></figure>
+                    <figure class="phone" role="listitem" data-slot="2"><img src="./assets/screens/theme-sakura.webp" width="640" height="1387" loading="lazy" decoding="async" alt="Sakura Full Bloom skin"></figure>
+                    <figure class="phone" role="listitem" data-slot="3"><img src="./assets/screens/theme-sakura-dark.webp" width="640" height="1387" loading="lazy" decoding="async" alt="Sakura skin in dark mode"></figure>
+                    <figure class="phone" role="listitem" data-slot="4"><img src="./assets/screens/theme-chenille.webp" width="640" height="1387" loading="lazy" decoding="async" alt="Chenille skin"></figure>
+                </div>
             </div>
         </section>
 
         <!-- The Map -->
-        <section class="map-section animate-on-scroll">
+        <section id="map" class="animate-on-scroll">
             <div class="container">
-                <p class="coming-badge">Coming after launch</p>
-                <h2 class="section-title">And when you're ready to meet someone new — there's the Map.</h2>
-                <p class="section-subtitle">One extra screen, entirely optional. A map of real things happening near you, organized by real people. No influencer system, no promoter hierarchy — anyone can host.</p>
-
-                <div class="meet-ways">
-                    <div class="meet-card">
-                        <h3>Circles</h3>
-                        <p class="muted">Planned and bigger. A car meet Saturday. A study group. A community game night.</p>
+                <div class="map-card">
+                    <div class="section-head">
+                        <span class="badge">Coming soon</span>
+                        <h2 class="display">And when you're ready to meet someone new — <em>there's the Map.</em></h2>
+                        <p>One extra screen, entirely optional. A map of real things happening near you, organized by real people. No influencer system, no promoter hierarchy — anyone can host.</p>
                     </div>
-                    <div class="meet-card">
-                        <h3>Drops</h3>
-                        <p class="muted">Small and now. Basketball at the park in an hour. Coffee in twenty minutes.</p>
+
+                    <div class="map-cards">
+                        <article class="card">
+                            <span class="card-tag">Planned &amp; bigger</span>
+                            <h3>Circles</h3>
+                            <p>A car meet Saturday. A study group. A community game night.</p>
+                        </article>
+                        <article class="card">
+                            <span class="card-tag">Small &amp; now</span>
+                            <h3>Drops</h3>
+                            <p>Basketball at the park in an hour. Coffee in twenty minutes.</p>
+                        </article>
                     </div>
-                </div>
 
-                <p class="section-subtitle">See something interesting, join it, show up. The event's group chat handles the rest.</p>
+                    <details class="disclosure">
+                        <summary>Built safe before it was built at all</summary>
+                        <div class="disclosure-body">
+                            <ul class="check-list">
+                                <li><strong>Everyone on the Map is ID-verified.</strong> Verification is handled by an independent identity service — we never see or store your document. Only for people 18 and over.</li>
+                                <li><strong>Your location is never shared.</strong> The only pin on the map is the event's, placed by its organizer. Enso does not know or show where you are.</li>
+                                <li><strong>No event happens with fewer than three.</strong> The exact address unlocks only after at least three people confirm — no one-on-one meetups with strangers, ever.</li>
+                                <li><strong>Fuzzy until you're in.</strong> Before you join, you see the neighborhood, not the doorstep.</li>
+                                <li><strong>You see who else is going.</strong> Name and photo of confirmed attendees — enough to decide, nothing more. Profiles stay locked.</li>
+                                <li><strong>Women-only events,</strong> built in as an option from day one.</li>
+                            </ul>
+                        </div>
+                    </details>
 
-                <h3 class="list-heading">Built safe before it was built at all.</h3>
-                <ul class="safety-list">
-                    <li><strong>Everyone on the Map is ID-verified.</strong> Verification is handled by an independent identity service — we never see or store your document. 18+ only.</li>
-                    <li><strong>Your location is never shared.</strong> The only pin on the map is the event's, placed by its organizer. Enso does not know or show where you are.</li>
-                    <li><strong>No event happens with fewer than three.</strong> The exact address unlocks only after at least three people confirm — no one-on-one meetups with strangers, ever.</li>
-                    <li><strong>Fuzzy until you're in.</strong> Before you join, you see the neighborhood, not the doorstep.</li>
-                    <li><strong>You see who else is going.</strong> Name and photo of confirmed attendees — enough to decide, nothing more. Profiles stay locked.</li>
-                    <li><strong>Women-only events,</strong> built in as an option from day one.</li>
-                </ul>
-
-                <p class="tagline-emphasis">The Map ships shortly after launch. The social app comes first — because meeting new people works better when you have somewhere calm to bring them back to.</p>
-            </div>
-        </section>
-
-        <!-- Safety & Privacy -->
-        <section class="privacy-section animate-on-scroll">
-            <div class="container">
-                <h2 class="section-title">Private by architecture, not by promise.</h2>
-                <ul class="safety-list">
-                    <li><strong>End-to-end encrypted chats.</strong> Your PIN restores your backup on a new phone with help from a key we hold and destroy after ten wrong guesses; your recovery phrase never leaves your device and works without us. Lose both and not even we can read or restore your history.</li>
-                    <li><strong>No location tracking.</strong> Enso never knows or shares where you are. The only pin on any map is an event's, placed by its organizer.</li>
-                    <li><strong>Invites are limited, username requests are opt-in.</strong> Nobody can mass-add strangers, and nobody can reach you by username unless you've switched it on. Every connection is accepted by both sides.</li>
-                    <li><strong>Your posts go to your connections and no one else.</strong> No public profiles, no discoverability, nothing indexed.</li>
-                    <li><strong>No ads, no data selling.</strong> You're the customer, not the product. There's nothing to target because nothing is tracked.</li>
-                    <li><strong>ID-verified Map, documents never stored.</strong> Verification is handled by an independent identity service — we never see or hold your document. 18+ only.</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Founder's Note -->
-        <section class="founder-section animate-on-scroll">
-            <div class="container">
-                <div class="prose-block founder-note">
-                    <h2 class="section-title">Why I'm building this.</h2>
-                    <p>I kept noticing the same thing everywhere. People sitting together, talking, but their minds still in the phone, scrolling stuff they themselves would call nothing. Everyone has a line ready. &ldquo;People post anything these days.&rdquo; &ldquo;I just use it a little.&rdquo; &ldquo;I'm not addicted.&rdquo; Usually said while scrolling. At meals, before sleep, first thing after waking up. I'm not judging anyone — I've been in some of those chairs myself.</p>
-                    <p>Every time I gave the apps another chance, the same thing happened. I'd install one, open it, and it would drop me straight into the part built to hold my attention. For a while I'd honestly forget that I never wanted to watch any of this. Even when I knew better, my mind would keep me stuck there — short videos, strangers' drama, other people showing off their lives. Some people will say I'm exaggerating. I think most of us have felt exactly this, whether we admit it or not.</p>
-                    <p>And it's not entirely our fault. These are some of the biggest companies on earth, and they spend unbelievable amounts to keep things exactly this way — scientists and designers to push screen time up, influencers to keep the stage full, lawyers for when it goes wrong. They make money. A regular user just loses: focus, attention, the ability to sit with a bored moment, and somehow we end up more alone while being more &ldquo;connected&rdquo; than ever.</p>
-                    <p>I tried quitting. In a sense I actually did. But quitting had its own cost — I lost touch with my friends' lives, because the only place they shared anything was the one place built to swallow me. And even what they shared wasn't really their life, just the show version of it.</p>
-                    <p>So a thought showed up and refused to leave: can this even be challenged? For months my answer was no. One person, no experience, no budget, no partner, against an industry that eats anyone who tries. Then another thought: most people fail their first attempt anyway. If I'm probably going to fail, why not fail at the fight that actually matters? I had nothing to lose. So here I am.</p>
-                    <p>I'm building the version of social media I think should exist. Calm, private, no score to keep. It will look boring next to an infinite feed — that's on purpose. And I'll be honest: if you feel the current apps do you no harm, keep them. Enso isn't trying to convert anyone. It's for people who already sense something is wrong and just want their people back, without the machine attached.</p>
-                    <p>A place to stay close to the ones who matter — and, when you're ready, a way to meet a few more of them in real life.</p>
-                    <p class="founder-sign">— Ashish, founder of Enso<br><span class="founder-place">Toronto, 2026</span></p>
+                    <p class="aside-line">The social app comes first — because meeting new people works better when you have somewhere calm to bring them back to.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Signup Section -->
-        <section class="signup animate-on-scroll" id="signup">
-            <div class="container">
-                <div class="signup-wrapper">
-                    <h2 class="section-title">Be one of the first.</h2>
-                    <p class="signup-subtitle">Enso launches in beta soon — a small first group who'll shape it before anyone else touches it. Early access, a direct line to the founder, and a say in what this becomes.</p>
+        <!-- Privacy -->
+        <section class="animate-on-scroll">
+            <div class="container" id="privacy">
+                <div class="orbit">
+                    <svg class="orbit-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                        <ellipse cx="50" cy="50" rx="46" ry="45" vector-effect="non-scaling-stroke"/>
+                    </svg>
 
-                    <form id="beta-signup-form" class="signup-form" novalidate>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="name" class="form-label">Name</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    class="form-input"
-                                    placeholder="Your name"
-                                    autocomplete="name"
-                                    aria-label="Your name"
-                                >
+                    <div class="orbit-centre">
+                        <div class="orbit-head">
+                            <span class="eyebrow">Privacy</span>
+                            <h2 class="display">Private by architecture, <em>not by promise.</em></h2>
+                        </div>
+                        <div class="orbit-readout" aria-live="polite">
+                            <p class="orbit-intro">Six things built into how Enso works. Choose one to see what it means.</p>
+                            <div class="orbit-detail" id="privacy-encrypted">
+                                <h3>End-to-end encrypted chats</h3>
+                                <p>Your PIN restores your backup with help from a key we hold and destroy after ten wrong guesses; your recovery phrase never leaves your device. Lose both and not even we can read or restore your history.</p>
                             </div>
-                            <div class="form-group">
-                                <label for="email" class="form-label">Email</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    class="form-input"
-                                    placeholder="you@example.com"
-                                    autocomplete="email"
-                                    required
-                                    aria-label="Email address"
-                                >
+                            <div class="orbit-detail" id="privacy-location">
+                                <h3>No location tracking</h3>
+                                <p>Enso never knows or shares where you are. The only pin on any map is an event's, placed by its organizer.</p>
+                            </div>
+                            <div class="orbit-detail" id="privacy-mutual">
+                                <h3>Every connection is mutual</h3>
+                                <p>Invites are limited and username requests are opt-in. Nobody can mass-add strangers, and every connection is accepted by both sides.</p>
+                            </div>
+                            <div class="orbit-detail" id="privacy-private">
+                                <h3>For your connections only</h3>
+                                <p>Your posts go to your connections and no one else. No public profiles, no discoverability, nothing indexed.</p>
+                            </div>
+                            <div class="orbit-detail" id="privacy-ads">
+                                <h3>No ads, no data selling</h3>
+                                <p>You're the customer, not the product. There's nothing to target because nothing is tracked.</p>
+                            </div>
+                            <div class="orbit-detail" id="privacy-verified">
+                                <h3>ID-verified Map, documents never stored</h3>
+                                <p>Verification is handled by an independent identity service — we never see or hold your document. Only for people 18 and over.</p>
                             </div>
                         </div>
-                        <button type="submit" class="cta-button" id="submit-btn">
-                            <span class="btn-text">Join the Beta</span>
-                            <span class="btn-loader" style="display: none;">Joining&hellip;</span>
-                        </button>
-                        <p class="form-note">
-                            By signing up you'll get early access details and occasional updates. Unsubscribe anytime.
-                        </p>
-                    </form>
+                    </div>
 
-                    <div id="message" class="message" role="status" aria-live="polite" style="display: none;"></div>
+                    <ul class="orbit-nodes" aria-label="Privacy guarantees">
+                        <li><button type="button" class="orbit-node" aria-controls="privacy-encrypted" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Encrypted</span></button></li>
+                        <li><button type="button" class="orbit-node" aria-controls="privacy-location" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 12 2.5a7 7 0 0 1 7 7C19 14.8 12 21 12 21z"/><path d="M4 4l16 16"/></svg><span>No tracking</span></button></li>
+                        <li><button type="button" class="orbit-node" aria-controls="privacy-mutual" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 11l2 2 4-4"/></svg><span>Mutual only</span></button></li>
+                        <li><button type="button" class="orbit-node" aria-controls="privacy-private" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M4 4l16 16"/></svg><span>Not public</span></button></li>
+                        <li><button type="button" class="orbit-node" aria-controls="privacy-ads" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg><span>No ads</span></button></li>
+                        <li><button type="button" class="orbit-node" aria-controls="privacy-verified" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.4 1.7-2 3-2s2.4.6 3 2M14 10h4M14 13h3"/></svg><span>ID-verified</span></button></li>
+                    </ul>
+
+                    <button type="button" class="orbit-toggle" aria-pressed="false">Pause motion</button>
                 </div>
             </div>
         </section>
 
+        <!-- Founder's note -->
+        <section class="founder animate-on-scroll">
+            <div class="container founder-grid" id="story">
+                <aside class="pullquote">
+                    <span class="eyebrow">Our story</span>
+                    <blockquote>&ldquo;If I'm probably going to fail, why not fail at the fight that <em>actually matters?</em>&rdquo;</blockquote>
+                </aside>
+
+                <div class="founder-note">
+                    <h2 class="display">Why I'm building this.</h2>
+                    <p>I kept noticing the same thing everywhere. People sitting together, talking, but their minds still in the phone, scrolling stuff they themselves would call nothing. Everyone has a line ready. &ldquo;People post anything these days.&rdquo; &ldquo;I just use it a little.&rdquo; &ldquo;I'm not addicted.&rdquo; Usually said while scrolling. At meals, before sleep, first thing after waking up. I'm not judging anyone — I've been in some of those chairs myself.</p>
+                    <p>Every time I gave the apps another chance, the same thing happened. I'd install one, open it, and it would drop me straight into the part built to hold my attention. For a while I'd honestly forget that I never wanted to watch any of this. Even when I knew better, my mind would keep me stuck there — short videos, strangers' drama, other people showing off their lives. Some people will say I'm exaggerating. I think most of us have felt exactly this, whether we admit it or not.</p>
+                    <details class="read-more">
+                        <summary>Read the full note</summary>
+                        <p>And it's not entirely our fault. These are some of the biggest companies on earth, and they spend unbelievable amounts to keep things exactly this way — scientists and designers to push screen time up, influencers to keep the stage full, lawyers for when it goes wrong. They make money. A regular user just loses: focus, attention, the ability to sit with a bored moment, and somehow we end up more alone while being more &ldquo;connected&rdquo; than ever.</p>
+                        <p>I tried quitting. In a sense I actually did. But quitting had its own cost — I lost touch with my friends' lives, because the only place they shared anything was the one place built to swallow me. And even what they shared wasn't really their life, just the show version of it.</p>
+                        <p>So a thought showed up and refused to leave: can this even be challenged? For months my answer was no. One person, no experience, no budget, no partner, against an industry that eats anyone who tries. Then another thought: most people fail their first attempt anyway. If I'm probably going to fail, why not fail at the fight that actually matters? I had nothing to lose. So here I am.</p>
+                        <p>I'm building the version of social media I think should exist. Calm, private, no score to keep. It will look boring next to an infinite feed — that's on purpose. And I'll be honest: if you feel the current apps do you no harm, keep them. Enso isn't trying to convert anyone. It's for people who already sense something is wrong and just want their people back, without the machine attached.</p>
+                        <p>A place to stay close to the ones who matter — and, when you're ready, a way to meet a few more of them in real life.</p>
+                    </details>
+                    <p class="signature">— Ashish, founder of Enso<span>Toronto, 2026</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download -->
+        <section class="animate-on-scroll">
+            <div class="container">
+                <div class="download-card" id="download">
+                    <span class="eyebrow">Download</span>
+                    <h2 class="display">Enso is <em>here.</em></h2>
+                    <p class="lede">Available now on the App Store for iPhone. Android is coming soon to Google Play.</p>
+                    <div class="store-actions">
+                        <a href="https://apps.apple.com/app/id6805994959" class="btn btn-primary" rel="noopener">Download on the App Store</a>
+                        <span class="btn btn-soon" aria-disabled="true">Google Play &middot; Coming soon</span>
+                    </div>
+                    <p class="availability">Sign-up is open in Canada, the United States and India.</p>
+                    <p class="early-note"><strong>It's early, and it's moving fast.</strong> Updates and fixes land often. Found a bug or have an idea? Shake your phone anywhere in the app to report it, or write to <a href="mailto:support@ensosocial.app">support@ensosocial.app</a>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="animate-on-scroll">
+            <div class="container" id="faq">
+                <div class="section-head center">
+                    <span class="eyebrow">FAQ</span>
+                    <h2 class="display">Questions, <em>answered.</em></h2>
+                </div>
+                <div class="faq-list">
+                    <details class="disclosure">
+                        <summary>Who can join, and where?</summary>
+                        <div class="disclosure-body"><p>Sign-up is open in Canada, the United States and India — you'll need a phone number from one of those countries. Enso is built for grown-ups staying close to family and friends, so accounts are for people 18 and over.</p></div>
+                    </details>
+                    <details class="disclosure">
+                        <summary>When is Android coming?</summary>
+                        <div class="disclosure-body"><p>Soon. Enso is in final testing for Google Play, and this page will link to it the day it's live.</p></div>
+                    </details>
+                    <details class="disclosure">
+                        <summary>How do I report a bug or suggest something?</summary>
+                        <div class="disclosure-body"><p>Shake your phone anywhere in the app and a &ldquo;Report a Problem&rdquo; sheet opens right where you are. You can also go to Settings → Support &amp; Policies for feedback, suggestions and live chat — or email <a href="mailto:support@ensosocial.app">support@ensosocial.app</a>.</p></div>
+                    </details>
+                    <details class="disclosure">
+                        <summary>Can Enso read my messages?</summary>
+                        <div class="disclosure-body"><p>No. Chats are end-to-end encrypted: messages are scrambled on your phone and unscrambled on theirs. All we ever hold is ciphertext.</p></div>
+                    </details>
+                    <details class="disclosure">
+                        <summary>How do I delete my account?</summary>
+                        <div class="disclosure-body"><p>From inside the app, or by following the steps on our <a href="./delete-account">delete account</a> page, which also explains what happens to your data.</p></div>
+                    </details>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="site-footer">
         <div class="container">
-            <div class="footer-content">
+            <div class="footer-grid">
                 <div class="footer-brand">
-                    <strong>Enso</strong>
-                    <p class="footer-tagline">Your life, not a scoreboard.</p>
+                    <img src="./ENSO-BG-Removed.png" alt="Enso" width="500" height="500" loading="lazy">
+                    <p>Your life, not a scoreboard.</p>
                 </div>
-                <nav class="footer-links" aria-label="Footer navigation">
-                    <a href="./terms">Terms</a>
-                    <a href="./privacy">Privacy</a>
-                    <a href="./community-guidelines">Guidelines</a>
-                    <a href="./safety">Safety</a>
-                    <a href="./law-enforcement">Law enforcement</a>
-                    <a href="./child-safety">Child safety</a>
-                    <a href="mailto:hello@ensosocial.app">Contact</a>
+                <nav class="footer-col" aria-labelledby="footer-app">
+                    <h2 id="footer-app">App</h2>
+                    <ul>
+                        <li><a href="https://apps.apple.com/app/id6805994959" rel="noopener">App Store</a></li>
+                        <li><span class="soon">Google Play — coming soon</span></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </nav>
+                <nav class="footer-col" aria-labelledby="footer-support">
+                    <h2 id="footer-support">Support</h2>
+                    <ul>
+                        <li><a href="mailto:support@ensosocial.app">Contact</a></li>
+                        <li><a href="./safety">Safety</a></li>
+                        <li><a href="./child-safety">Child safety</a></li>
+                        <li><a href="./delete-account">Delete account</a></li>
+                    </ul>
+                </nav>
+                <nav class="footer-col" aria-labelledby="footer-legal">
+                    <h2 id="footer-legal">Legal</h2>
+                    <ul>
+                        <li><a href="./terms">Terms</a></li>
+                        <li><a href="./privacy">Privacy</a></li>
+                        <li><a href="./community-guidelines">Guidelines</a></li>
+                        <li><a href="./law-enforcement">Law enforcement</a></li>
+                    </ul>
                 </nav>
             </div>
             <div class="footer-bottom">
-                <small>Built in Toronto · 2026</small>
+                <span>Built in Toronto &middot; 2026</span>
+                <span>&copy; 2026 Enso</span>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.115.0" defer></script>
-    <script src="./env.js" defer></script>
     <script src="./script.js" defer></script>
 </body>
 </html>

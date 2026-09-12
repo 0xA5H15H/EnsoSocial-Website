@@ -1,0 +1,5 @@
+# outputDirectory is the repo root, so keep non-site files out of the deployment
+README.md
+supabase/
+.claude/
+.DS_Store

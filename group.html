@@ -40,7 +40,7 @@
                 <p id="lead">This is a private group invite. It only works inside the app.</p>
                 <div class="open-actions">
                     <a class="open-primary" id="open" href="#">Open in Enso</a>
-                    <a class="open-secondary" id="store" href="/#signup" rel="noopener">Get the app</a>
+                    <a class="open-secondary" id="store" href="/#download" rel="noopener">Get the app</a>
                 </div>
                 <p style="margin-top:1.25rem;font-size:.85rem">Once Enso is installed, open this link again and it will land in the app.</p>
             </div>
@@ -55,8 +55,8 @@
         open.href = 'enso://g/' + code;
         var ua = navigator.userAgent || '';
         var store = document.getElementById('store');
-        if (/android/i.test(ua)) store.href = 'https://play.google.com/store/apps/details?id=app.ensosocial';
-        else if (/iphone|ipad|ipod/i.test(ua)) store.href = 'https://apps.apple.com/app/id6805994959';
+        // Android stays on /#download until the Play listing is public; restore the Play URL on launch day.
+        if (/iphone|ipad|ipod/i.test(ua)) store.href = 'https://apps.apple.com/app/id6805994959';
       })();
     </script>
 

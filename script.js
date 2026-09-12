@@ -1,23 +1,13 @@
-// ==================== SUPABASE INITIALIZATION ====================
-// Sanitize SUPABASE_URL by stripping any trailing slash that could break request formatting
-const SUPABASE_URL = (window.ENV?.SUPABASE_URL || '').trim().replace(/\/+$/, '');
-const SUPABASE_ANON_KEY = (window.ENV?.SUPABASE_ANON_KEY || '').trim();
+// ==================== STORE LINKS ====================
+// On iPhone/iPad, "Download" links go straight to the App Store instead of scrolling to #download.
+// Runs before the smooth-scroll binding below so the rewritten links aren't treated as anchors.
+const APP_STORE_URL = 'https://apps.apple.com/app/id6805994959';
 
-let supabaseClient = null;
-
-// Initialize Supabase safely to prevent crashing if the library is blocked or failed to load
-if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-    if (window.supabase) {
-        try {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        } catch (initErr) {
-            console.error('Error creating Supabase client:', initErr);
-        }
-    } else {
-        console.error('Supabase library (supabase-js) is not loaded or was blocked by an adblocker/network issue.');
-    }
-} else {
-    console.warn('Supabase credentials not found in window.ENV.');
+if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+    document.querySelectorAll('[data-ios-store]').forEach(link => {
+        link.href = APP_STORE_URL;
+        link.rel = 'noopener';
+    });
 }
 
 // ==================== SCROLL ANIMATIONS ====================
@@ -53,12 +43,295 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// ==================== HEADER ====================
+// Condense the header once the page has scrolled past the top.
+const siteHeader = document.querySelector('.site-header');
+
+if (siteHeader) {
+    let ticking = false;
+    const updateHeader = () => {
+        siteHeader.classList.toggle('is-scrolled', window.scrollY > 24);
+        ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(updateHeader);
+        }
+    }, { passive: true });
+    updateHeader();
+}
+
+// ==================== POSTS TOUR ====================
+// The pinned phone shows whichever step sits in the middle of the viewport.
+const tour = document.querySelector('.tour');
+
+if (tour) {
+    const steps = [...tour.querySelectorAll('.tour-step')];
+    const screens = [...tour.querySelectorAll('.tour-screen')];
+
+    const setStep = (index) => {
+        steps.forEach((step, i) => step.classList.toggle('is-active', i === index));
+        screens.forEach((screen, i) => screen.classList.toggle('is-current', i === index));
+    };
+
+    const stepObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) setStep(steps.indexOf(entry.target));
+        });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+
+    steps.forEach(step => stepObserver.observe(step));
+}
+
+// ==================== THEME CAROUSEL ====================
+// Five fixed slots (0–4, centre = 2); each phone's data-slot says where it sits.
+// Every few seconds the fan turns one step to the right, so the left neighbour takes the centre.
+// Clicking a side phone brings it straight to the centre, and the turning carries on from there.
+// A phone that would run off one end fades out, jumps unseen to the other end and fades back in,
+// so nothing ever sweeps across the fan. Turning pauses off screen and in background tabs, never
+// runs with reduced motion, and the whole thing is a plain swipe row on phones.
+const themeFan = document.querySelector('.theme-fan');
+
+if (themeFan) {
+    const phones = [...themeFan.querySelectorAll('.phone')];
+    const count = phones.length;
+    const CENTRE = 2;
+    const TURN_EVERY = 3200;
+    const MOVE_TIME = 1000;   // matches the transform transition in home.css
+    const FADE_TIME = 450;    // matches the .is-wrapping opacity transition
+
+    const asRow = window.matchMedia('(max-width: 700px)');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let timer = null;
+    let inView = false;
+    let moving = false;
+
+    const moveBy = (delta) => {
+        moving = true;
+        setTimeout(() => { moving = false; }, MOVE_TIME);
+
+        phones.forEach(phone => {
+            const target = Number(phone.dataset.slot) + delta;
+            if (target >= 0 && target < count) {
+                phone.dataset.slot = target;
+                return;
+            }
+            phone.classList.add('is-wrapping');
+            setTimeout(() => {
+                phone.dataset.slot = (target + count) % count;
+                // Force layout so the jump is applied (untransitioned) before the fade-in transition returns
+                void phone.offsetWidth;
+                phone.classList.remove('is-wrapping');
+            }, FADE_TIME);
+        });
+    };
+
+    const sync = () => {
+        const shouldRun = inView && !document.hidden && !asRow.matches && !reduceMotion.matches;
+        if (shouldRun && !timer) timer = setInterval(() => moveBy(1), TURN_EVERY);
+        if (!shouldRun && timer) {
+            clearInterval(timer);
+            timer = null;
+        }
+    };
+
+    themeFan.addEventListener('click', (event) => {
+        const phone = event.target.closest('.phone');
+        if (!phone || asRow.matches || moving) return;
+        const delta = CENTRE - Number(phone.dataset.slot);
+        if (delta === 0) return;
+        moveBy(delta);
+        // Restart the clock so the next automatic turn comes a full interval after the click
+        clearInterval(timer);
+        timer = null;
+        sync();
+    });
+
+    new IntersectionObserver(([entry]) => {
+        inView = entry.isIntersecting;
+        sync();
+    }, { threshold: 0.2 }).observe(themeFan);
+
+    document.addEventListener('visibilitychange', sync);
+    // Safari < 14 only has the old addListener API on media queries
+    [asRow, reduceMotion].forEach(query => {
+        if (query.addEventListener) query.addEventListener('change', sync);
+        else query.addListener(sync);
+    });
+}
+
+// ==================== PRIVACY ORBIT ====================
+// Six guarantees ride a slow elliptical ring (one lap every 80s). Whichever tile reaches the top is
+// highlighted and its explanation fades into the fixed centre, so the text cycles on its own (~13s
+// each) and never moves while it's read. Pointing at or keyboard-focusing a tile pauses the ring and
+// shows that one; a click/tap shows it until the next tile reaches the top, then the cycle carries on.
+// There's also a Pause button. Below 961px it's a tap-only row of pills; with reduced motion the
+// ring holds still and nothing changes on its own.
+const orbit = document.querySelector('.orbit');
+
+if (orbit) {
+    const nodes = [...orbit.querySelectorAll('.orbit-node')];
+    const details = [...orbit.querySelectorAll('.orbit-detail')];
+    const intro = orbit.querySelector('.orbit-intro');
+    const toggle = orbit.querySelector('.orbit-toggle');
+    const readout = orbit.querySelector('.orbit-readout');
+    const asRing = window.matchMedia('(min-width: 961px)');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const LAP = 80000;
+    const STEP = (2 * Math.PI) / nodes.length;
+    // The first guarantee starts just before the top, so it rises into place and gets a full
+    // turn (~13s) on show like every other tile, instead of handing over halfway through
+    let angle = -Math.PI / 2 - STEP / 2 + 0.001;
+    let frame = null;
+    let lastTime = null;
+    let inView = false;
+    let hovering = false;
+    let focused = false;
+    let userPaused = false;
+    let lastTop = -1;
+
+    const ellipse = orbit.querySelector('.orbit-path ellipse');
+
+    // The ring is sized from the tiles themselves, so a tile (even at its hover size) never pokes
+    // outside the orbit box; the drawn ellipse is updated to the same radii.
+    const place = () => {
+        const w = orbit.clientWidth;
+        const h = orbit.clientHeight;
+        const rx = w / 2 - nodes[0].offsetWidth * 0.53;
+        const ry = h / 2 - nodes[0].offsetHeight * 0.53;
+        ellipse.setAttribute('rx', (rx / w) * 100);
+        ellipse.setAttribute('ry', (ry / h) * 100);
+        nodes.forEach((node, i) => {
+            const a = angle + i * STEP;
+            const x = w / 2 + rx * Math.cos(a);
+            const y = h / 2 + ry * Math.sin(a);
+            node.parentElement.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+        });
+    };
+
+    const tick = (now) => {
+        if (lastTime !== null) angle += ((now - lastTime) / LAP) * 2 * Math.PI;
+        lastTime = now;
+        place();
+        autoAdvance();
+        frame = requestAnimationFrame(tick);
+    };
+
+    const sync = () => {
+        const run = asRing.matches && inView && !hovering && !focused && !userPaused && !reduceMotion.matches;
+        if (run && !frame) {
+            lastTime = null;
+            frame = requestAnimationFrame(tick);
+        }
+        if (!run && frame) {
+            cancelAnimationFrame(frame);
+            frame = null;
+        }
+        toggle.hidden = !asRing.matches || reduceMotion.matches;
+    };
+
+    const layout = () => {
+        if (asRing.matches) {
+            place();
+            if (!reduceMotion.matches) autoAdvance();
+        } else {
+            nodes.forEach(node => { node.parentElement.style.transform = ''; });
+        }
+        sync();
+    };
+
+    // Screen readers hear the explanation only when the visitor picked it, not every automatic change
+    const select = (index, fromVisitor = false) => {
+        readout.setAttribute('aria-live', fromVisitor ? 'polite' : 'off');
+        nodes.forEach((node, i) => {
+            node.classList.toggle('is-selected', i === index);
+            node.setAttribute('aria-expanded', String(i === index));
+        });
+        details.forEach((detail, i) => { detail.hidden = i !== index; });
+        intro.hidden = index !== -1;
+    };
+
+    // Index of the tile currently nearest the top of the ring (angle −π/2)
+    const topIndex = () => {
+        const k = Math.round((-Math.PI / 2 - angle) / STEP);
+        return ((k % nodes.length) + nodes.length) % nodes.length;
+    };
+
+    // Show the top tile's explanation whenever a new tile reaches the top — unless the visitor is
+    // pointing at or focused on one. A clicked tile stays shown until this next hand-over.
+    const autoAdvance = () => {
+        const top = topIndex();
+        if (top === lastTop) return;
+        lastTop = top;
+        if (!hovering && !focused) select(top);
+    };
+
+    // Keyboard focus only — a mouse click focuses the button in some browsers, and that
+    // shouldn't leave the ring paused until the visitor clicks somewhere else
+    const isKeyboardFocus = (node) => {
+        try { return node.matches(':focus-visible'); } catch (e) { return true; }
+    };
+
+    nodes.forEach((node, i) => {
+        node.addEventListener('pointerenter', (event) => {
+            if (event.pointerType !== 'mouse') return;
+            hovering = true;
+            select(i, true);
+            sync();
+        });
+        node.addEventListener('pointerleave', (event) => {
+            if (event.pointerType !== 'mouse') return;
+            hovering = false;
+            sync();
+        });
+        node.addEventListener('focus', () => {
+            if (!isKeyboardFocus(node)) return;
+            focused = true;
+            select(i, true);
+            sync();
+        });
+        node.addEventListener('blur', () => {
+            focused = false;
+            sync();
+        });
+        node.addEventListener('click', () => select(i, true));
+    });
+
+    toggle.addEventListener('click', () => {
+        userPaused = !userPaused;
+        toggle.setAttribute('aria-pressed', String(userPaused));
+        toggle.textContent = userPaused ? 'Resume motion' : 'Pause motion';
+        sync();
+    });
+
+    new IntersectionObserver(([entry]) => {
+        inView = entry.isIntersecting;
+        sync();
+    }, { threshold: 0.2 }).observe(orbit);
+
+    if (window.ResizeObserver) new ResizeObserver(layout).observe(orbit);
+    else window.addEventListener('resize', layout);
+
+    [asRing, reduceMotion].forEach(query => {
+        if (query.addEventListener) query.addEventListener('change', layout);
+        else query.addListener(layout);
+    });
+
+    select(-1);
+    layout();
+    // The ring layout only applies once body.js-loaded is set (on DOMContentLoaded), so lay out again
+    // then and after load — rather than relying solely on the ResizeObserver catching the change
+    document.addEventListener('DOMContentLoaded', layout);
+    window.addEventListener('load', layout);
+}
+
 // ==================== SMOOTH SCROLL ====================
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
-        if (href === '#') return;
+        if (!href.startsWith('#') || href === '#') return;
 
         e.preventDefault();
         const target = document.querySelector(href);
@@ -75,237 +348,4 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             }
         }
     });
-});
-
-// ==================== TOAST NOTIFICATION SYSTEM ====================
-function createToast(text, type) {
-    // Remove any existing toast
-    const existingToast = document.querySelector('.toast-notification');
-    if (existingToast) {
-        existingToast.remove();
-    }
-
-    const toast = document.createElement('div');
-    toast.className = `toast-notification toast-${type}`;
-
-    const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ';
-    toast.innerHTML = `
-        <div class="toast-icon">${icon}</div>
-        <div class="toast-content">${text}</div>
-        <button class="toast-close" aria-label="Close notification">&times;</button>
-    `;
-
-    document.body.appendChild(toast);
-
-    // Trigger entrance animation
-    requestAnimationFrame(() => {
-        toast.classList.add('toast-visible');
-    });
-
-    // Close button handler
-    toast.querySelector('.toast-close').addEventListener('click', () => {
-        dismissToast(toast);
-    });
-
-    // Auto-dismiss after 6 seconds for success, 8 for errors
-    const duration = type === 'success' ? 6000 : 8000;
-    setTimeout(() => {
-        dismissToast(toast);
-    }, duration);
-}
-
-function dismissToast(toast) {
-    if (!toast || !toast.parentNode) return;
-    toast.classList.remove('toast-visible');
-    toast.classList.add('toast-exit');
-    setTimeout(() => {
-        if (toast.parentNode) toast.remove();
-    }, 400);
-}
-
-// ==================== ERROR LOGGING ====================
-async function logError(errorCode, errorMessage, attemptedEmail) {
-    if (!supabaseClient) return;
-
-    try {
-        await supabaseClient
-            .from('error_logs')
-            .insert([{
-                error_code: errorCode || 'UNKNOWN',
-                error_message: errorMessage || 'No message',
-                attempted_email: attemptedEmail || '',
-                user_agent: navigator.userAgent,
-                created_at: new Date().toISOString()
-            }]);
-    } catch (logErr) {
-        // Silently fail — don't let error logging break the user experience
-        console.error('Failed to log error:', logErr);
-    }
-}
-
-// ==================== FORM HANDLING ====================
-const form = document.getElementById('beta-signup-form');
-const nameInput = document.getElementById('name');
-const emailInput = document.getElementById('email');
-const submitBtn = document.getElementById('submit-btn');
-const btnText = document.querySelector('.btn-text');
-const btnLoader = document.querySelector('.btn-loader');
-const messageDiv = document.getElementById('message');
-
-// Show message to user (in-form message + toast)
-function showMessage(text, type) {
-    // Show in-form message
-    messageDiv.textContent = text;
-    messageDiv.className = `message ${type}`;
-    messageDiv.style.display = 'block';
-
-    // Scroll message into view
-    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-    // Also show a toast notification
-    createToast(text, type);
-
-    // Auto-hide in-form success messages after 6 seconds
-    if (type === 'success') {
-        setTimeout(() => {
-            messageDiv.style.display = 'none';
-        }, 6000);
-    }
-}
-
-// Validate email format
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Set loading state
-function setLoading(isLoading) {
-    submitBtn.disabled = isLoading;
-    btnText.style.display = isLoading ? 'none' : 'inline';
-    btnLoader.style.display = isLoading ? 'inline' : 'none';
-
-    if (isLoading) {
-        submitBtn.classList.add('loading');
-    } else {
-        submitBtn.classList.remove('loading');
-    }
-}
-
-// Handle form submission
-async function handleSubmit(e) {
-    e.preventDefault();
-
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim();
-
-    // Hide any previous messages
-    messageDiv.style.display = 'none';
-
-    // Validate email (required)
-    if (!email) {
-        showMessage('Please enter your email address.', 'error');
-        emailInput.focus();
-        return;
-    }
-
-    if (!isValidEmail(email)) {
-        showMessage('That doesn\'t look like a valid email. Mind double-checking?', 'error');
-        emailInput.focus();
-        return;
-    }
-
-    // Check if Supabase is initialized
-    if (!supabaseClient) {
-        showMessage('We\'re having trouble connecting right now. Please try again in a moment.', 'error');
-        console.error('Supabase is not initialized. Check your environment variables.');
-        await logError('SUPABASE_NOT_INIT', 'Supabase client not initialized', email);
-        return;
-    }
-
-    setLoading(true);
-
-    try {
-        // Prepare data object
-        const signupData = {
-            email: email,
-            signed_up_at: new Date().toISOString()
-        };
-
-        // Add name if provided
-        if (name) {
-            signupData.name = name;
-        }
-
-        // Insert into Supabase
-        const { data, error } = await supabaseClient
-            .from('beta_signups')
-            .insert([signupData]);
-
-        if (error) {
-            // Handle duplicate email error
-            if (error.code === '23505') {
-                showMessage("You're already on the list — we'll be in touch.", 'success');
-                // Clear form on duplicate (they're already signed up)
-                nameInput.value = '';
-                emailInput.value = '';
-            } else {
-                console.error('Supabase error details:', error);
-                await logError(error.code, error.message, email);
-                showMessage('Something went wrong on our end. We\'ve logged the issue — please try again shortly.', 'error');
-            }
-        } else {
-            showMessage('You\'re on the list. We\'ll reach out when it\'s time.', 'success');
-
-            // Clear form on success
-            nameInput.value = '';
-            emailInput.value = '';
-        }
-    } catch (error) {
-        console.error('Error submitting form:', error);
-        await logError('NETWORK_ERROR', error.message || 'Network or fetch error', email);
-        showMessage('Couldn\'t reach our servers. Check your connection and try again.', 'error');
-    } finally {
-        setLoading(false);
-    }
-}
-
-// Add form submit event listener
-if (form) {
-    form.addEventListener('submit', handleSubmit);
-}
-
-// Inline email validation — flag on blur, clear as they type
-if (emailInput) {
-    emailInput.addEventListener('blur', () => {
-        const value = emailInput.value.trim();
-        const invalid = value !== '' && !isValidEmail(value);
-        emailInput.classList.toggle('invalid', invalid);
-        emailInput.setAttribute('aria-invalid', invalid ? 'true' : 'false');
-    });
-
-    emailInput.addEventListener('input', () => {
-        emailInput.classList.remove('invalid');
-        emailInput.setAttribute('aria-invalid', 'false');
-    });
-}
-
-// ==================== DEVELOPMENT WARNINGS ====================
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-        console.warn('Supabase credentials not found — copy env.example.js to env.js.');
-    }
-}
-
-// ==================== ACCESSIBILITY ====================
-// Add keyboard navigation improvements
-document.addEventListener('keydown', (e) => {
-    // Escape key closes messages and toasts
-    if (e.key === 'Escape') {
-        if (messageDiv.style.display === 'block') {
-            messageDiv.style.display = 'none';
-        }
-        const toast = document.querySelector('.toast-notification');
-        if (toast) dismissToast(toast);
-    }
 });
