@@ -1,6 +1,7 @@
-/* ==================== Fonts ====================
-   Sora is loaded via <link> in each page's <head> (preconnect + stylesheet)
-   to avoid a render-blocking @import here. */
+/* ==================== Shared styles ====================
+   Used by the legal, open-in-app (/c, /g), 404, delete-account and SMS opt-in pages.
+   The homepage has its own stylesheet (home.css). Inter and Instrument Serif are loaded
+   via <link> in each page's <head> (preconnect + stylesheet) to avoid a render-blocking @import. */
 
 /* ==================== CSS Variables ==================== */
 :root {
@@ -13,8 +14,10 @@
     --accent-hover: #8B5CF6;
     --accent-ghost: rgba(167, 139, 250, 0.08);
     --accent-glow: rgba(167, 139, 250, 0.15);
-    --error: #FF4C6A;
-    --success: #A78BFA;
+
+    /* Type — same families as the homepage */
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --serif: 'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
 
     /* Spacing */
     --space-xxl: clamp(72px, 10vw, 160px);
@@ -37,8 +40,6 @@
     --radius-lg: 16px;
 
     /* Effects */
-    --shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 50px rgba(0, 0, 0, 0.6);
-    --shadow-lg: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 30px 70px rgba(0, 0, 0, 0.7);
     --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -67,7 +68,7 @@ html {
 }
 
 body {
-    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: var(--sans);
     font-weight: 400;
     background: radial-gradient(1400px 1400px at 50% -10%, var(--accent-ghost), transparent 65%), var(--bg);
     color: var(--fg);
@@ -84,28 +85,9 @@ body {
     padding: 0 var(--container-padding);
 }
 
-/* ==================== Skip Link ==================== */
-.skip-link {
-    position: absolute;
-    left: -9999px;
-    top: auto;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-}
-
-.skip-link:focus {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    width: auto;
-    height: auto;
-    padding: 12px 20px;
-    background: var(--accent);
-    color: var(--bg);
-    font-weight: 600;
-    border-radius: var(--radius);
-    z-index: 9999;
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 /* ==================== Header ==================== */
@@ -152,124 +134,13 @@ body {
     transition: opacity var(--transition-fast);
 }
 
-@media (max-width: 768px) {
-    .logo-img {
-        height: 52px;
-    }
-}
-
 .logo-img:hover {
     opacity: 0.85;
 }
 
-.nav-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
-    border-radius: 999px;
-    color: var(--fg);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.02);
-    text-decoration: none;
-    font-size: var(--small);
-    font-weight: 500;
-    transition: all var(--transition-fast);
-}
-
-.nav-cta:hover {
-    border-color: var(--accent);
-    background: rgba(167, 139, 250, 0.05);
-    transform: translateY(-1px);
-}
-
-.nav-cta:active {
-    transform: scale(0.97);
-    transition-duration: 100ms;
-}
-
-/* ==================== Hero Section ==================== */
-.hero {
-    position: relative;
-    padding: calc(var(--space-xxl) + 40px) 0 var(--space-xxl);
-    display: grid;
-    place-items: center;
-    text-align: center;
-    min-height: 85vh;
-}
-
-.hero-pulse {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.hero-pulse::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 35%;
-    width: 120vmax;
-    height: 120vmax;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(closest-side, rgba(167, 139, 250, 0.08), transparent 70%);
-    border-radius: 50%;
-    animation: echo 12s ease-in-out infinite;
-    opacity: 0.5;
-}
-
-@keyframes echo {
-    0%, 100% {
-        transform: translate(-50%, -50%) scale(0.94);
-        opacity: 0.35;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.06);
-        opacity: 0.55;
-    }
-}
-
-.hero-content {
-    position: relative;
-    z-index: 1;
-}
-
-.hero-logo {
-    height: 104px;
-    width: auto;
-    margin: 0 auto var(--space-lg);
-    display: block;
-}
-
-.hero-title {
-    font-family: 'Sora', sans-serif;
-    font-size: var(--h1);
-    font-weight: 700;
-    line-height: 1.05;
-    margin-bottom: var(--space-lg);
-    letter-spacing: -0.025em;
-}
-
-.hero-subtitle {
-    max-width: 640px;
-    margin: 0 auto var(--space-lg);
-    color: var(--muted);
-    font-size: var(--body);
-    font-weight: 400;
-    line-height: 1.8;
-}
-
-.hero-kicker {
-    color: var(--accent);
-    font-size: var(--body);
-    font-weight: 600;
-    margin-bottom: var(--space-xl);
-}
-
-/* ==================== CTA Button ==================== */
+/* ==================== CTA Button (404) ==================== */
 .cta-button {
-    font-family: 'Sora', sans-serif;
+    font-family: var(--sans);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -298,155 +169,9 @@ body {
     transition: transform 100ms ease-out;
 }
 
-:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-}
-
-
 /* ==================== Sections ==================== */
 section {
     padding: var(--space-xxl) 0;
-}
-
-.section-title {
-    font-family: 'Sora', sans-serif;
-    font-size: var(--h2);
-    font-weight: 700;
-    margin-bottom: var(--space-lg);
-    text-align: center;
-    letter-spacing: -0.015em;
-}
-
-/* Size-specific tracking: card headings tighten slightly, small text opens up */
-.meet-card h3,
-.feed-feature h3,
-.removed-item h3,
-.list-heading {
-    letter-spacing: -0.01em;
-}
-
-.availability,
-.footer-bottom small,
-.post-lifespan {
-    letter-spacing: 0.01em;
-}
-
-.muted {
-    color: var(--dim);
-    line-height: 1.7;
-}
-
-/* ==================== Safety Lists (Map + Privacy) ==================== */
-.list-heading {
-    font-family: 'Sora', sans-serif;
-    font-size: var(--h3);
-    font-weight: 600;
-    text-align: center;
-    margin-top: var(--space-xl);
-    margin-bottom: var(--space-md);
-}
-
-.safety-list {
-    list-style: none;
-    padding: 0;
-    margin: var(--space-lg) auto 0;
-    max-width: 700px;
-    display: grid;
-    gap: 16px;
-}
-
-.safety-list li {
-    color: var(--muted);
-    font-size: var(--body);
-    padding-left: 28px;
-    position: relative;
-}
-
-.safety-list li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-size: 24px;
-    line-height: 1;
-}
-
-.safety-list li strong {
-    color: var(--fg);
-    font-weight: 600;
-}
-
-/* ==================== Store Buttons ==================== */
-/* stretch so the Play pill matches the App Store button's height on the same row */
-.store-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    justify-content: center;
-    gap: var(--space-sm);
-}
-
-/* Google Play isn't live yet — shown so Android visitors know, never clickable */
-.store-soon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px 28px;
-    border-radius: 999px;
-    border: 1px dashed rgba(255, 255, 255, 0.18);
-    color: var(--dim);
-    font-size: var(--small);
-    font-weight: 500;
-    cursor: default;
-    user-select: none;
-}
-
-.availability {
-    margin-top: var(--space-md);
-    color: var(--dim);
-    font-size: var(--small);
-}
-
-/* ==================== Download Section ==================== */
-.download-wrapper {
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.download-subtitle {
-    color: var(--muted);
-    font-size: var(--body);
-    line-height: 1.7;
-    max-width: 600px;
-    margin: 0 auto var(--space-lg);
-}
-
-.download-note {
-    max-width: 560px;
-    margin: var(--space-xl) auto 0;
-    padding: var(--space-md);
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-lg);
-    color: var(--dim);
-    font-size: var(--small);
-    line-height: 1.7;
-}
-
-.download-note strong {
-    color: var(--fg);
-    font-weight: 600;
-}
-
-.download-note a {
-    color: var(--accent);
-    text-decoration: none;
-}
-
-.download-note a:hover {
-    text-decoration: underline;
 }
 
 /* ==================== Footer ==================== */
@@ -500,329 +225,7 @@ section {
 .footer-bottom small {
     color: var(--dim);
     font-size: 13px;
-}
-
-/* ==================== Animations ==================== */
-/* Fade in animation for hero */
-.fade-in {
-    animation: fadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Scroll animations — short travel, settled ease-out, never lagging the scroll */
-.animate-on-scroll {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Only hide if JS is loaded and animations are supported */
-@media (prefers-reduced-motion: no-preference) {
-    .js-loaded .animate-on-scroll:not(.animated) {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-}
-
-.animate-on-scroll.animated {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Card groups rise with a subtle stagger when their section reveals */
-@media (prefers-reduced-motion: no-preference) {
-    .js-loaded .animate-on-scroll.animated .meet-card,
-    .js-loaded .animate-on-scroll.animated .feed-feature,
-    .js-loaded .animate-on-scroll.animated .removed-item {
-        animation: rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-    }
-
-    .js-loaded .animate-on-scroll.animated .meet-card:nth-child(2),
-    .js-loaded .animate-on-scroll.animated .feed-feature:nth-child(2),
-    .js-loaded .animate-on-scroll.animated .removed-item:nth-child(2) {
-        animation-delay: 60ms;
-    }
-
-    .js-loaded .animate-on-scroll.animated .meet-card:nth-child(3),
-    .js-loaded .animate-on-scroll.animated .feed-feature:nth-child(3),
-    .js-loaded .animate-on-scroll.animated .removed-item:nth-child(3) {
-        animation-delay: 120ms;
-    }
-
-    .js-loaded .animate-on-scroll.animated .removed-item:nth-child(n+4) {
-        animation-delay: 180ms;
-    }
-}
-
-@keyframes rise {
-    from {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-}
-
-/* ==================== The Rule Section ==================== */
-.rule-section {
-    text-align: center;
-    background: linear-gradient(180deg, transparent, rgba(167, 139, 250, 0.02), transparent);
-}
-
-.section-subtitle {
-    text-align: center;
-    font-size: var(--body);
-    color: var(--dim);
-    max-width: 800px;
-    margin: 0 auto var(--space-lg);
-    line-height: 1.8;
-}
-
-.tagline-emphasis {
-    margin-top: var(--space-xl);
-    font-size: 1.3rem;
-    color: var(--muted);
-    font-style: italic;
-    text-align: center;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.7;
-}
-
-/* ==================== Removed Section ==================== */
-.removed-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-md);
-    max-width: 900px;
-    margin: var(--space-xl) auto;
-}
-
-.removed-item {
-    padding: var(--space-md) var(--space-lg);
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius);
-    text-align: left;
-    transition: all var(--transition);
-}
-
-.removed-item:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(167, 139, 250, 0.25);
-}
-
-.removed-item h3 {
-    font-family: 'Sora', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--fg);
-    margin-bottom: 6px;
-}
-
-.removed-item p {
-    color: var(--dim);
-    font-size: var(--small);
-    line-height: 1.6;
-}
-
-.removed-tagline {
-    text-align: center;
-    font-size: 1.3rem;
-    color: var(--muted);
-    margin: var(--space-lg) auto;
-    max-width: 800px;
-    font-style: italic;
-}
-
-/* ==================== Posts Section (Stories / Moments / Memories) ==================== */
-.feed-features {
-    display: grid;
-    gap: var(--space-xl);
-    max-width: 800px;
-    margin: var(--space-xl) auto 0;
-}
-
-.feed-feature {
-    padding: var(--space-lg);
-    background: rgba(255, 255, 255, 0.02);
-    border-left: 3px solid var(--accent);
-    border-radius: var(--radius);
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                background var(--transition);
-}
-
-.feed-feature:hover {
-    background: rgba(255, 255, 255, 0.04);
-    transform: translateX(8px);
-}
-
-.feed-feature h3 {
-    font-family: 'Sora', sans-serif;
-    font-size: 1.6rem;
-    margin-bottom: var(--space-sm);
-    color: var(--fg);
-    font-weight: 600;
-}
-
-.feed-feature p {
-    color: var(--dim);
-    font-size: var(--body);
-    line-height: 1.7;
-}
-
-.post-lifespan {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 999px;
-    background: var(--accent-ghost);
-    border: 1px solid rgba(167, 139, 250, 0.25);
-    color: var(--accent);
-    font-size: var(--small);
-    font-weight: 500;
-    margin-bottom: var(--space-sm);
-}
-
-.posts-note {
-    text-align: center;
-    color: var(--muted);
-    font-size: var(--body);
-    line-height: 1.8;
-    max-width: 700px;
-    margin: var(--space-lg) auto 0;
-}
-
-.posts-note.dim {
-    color: var(--dim);
-    font-size: var(--small);
-    margin-top: var(--space-md);
-}
-
-/* ==================== Prose Sections (Chats / Founder's Note) ==================== */
-.chats-section {
-    background: rgba(0, 0, 0, 0.3);
-}
-
-.founder-section {
-    background: linear-gradient(180deg, transparent, rgba(167, 139, 250, 0.02), transparent);
-}
-
-.prose-block {
-    max-width: 680px;
-    margin: 0 auto;
-}
-
-.prose-block p {
-    color: var(--muted);
-    font-size: var(--body);
-    line-height: 1.9;
-    margin-bottom: var(--space-md);
-}
-
-.prose-block p:last-child {
-    margin-bottom: 0;
-}
-
-.prose-block .prose-emphasis {
-    color: var(--fg);
-    font-weight: 600;
-}
-
-.prose-block .founder-sign {
-    margin-top: var(--space-lg);
-    color: var(--fg);
-    font-weight: 600;
-}
-
-.founder-place {
-    color: var(--dim);
-    font-weight: 400;
-    font-size: var(--small);
-}
-
-/* ==================== Paired Cards (The Rule / Circles & Drops) ==================== */
-.meet-ways {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-lg);
-    margin: var(--space-xl) auto;
-    max-width: 900px;
-}
-
-.meet-card {
-    padding: var(--space-lg);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    /* hover response quicker than surface changes */
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                border-color var(--transition),
-                box-shadow var(--transition);
-    text-align: left;
-}
-
-.meet-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(167, 139, 250, 0.3);
-    box-shadow: var(--shadow-lg);
-}
-
-.meet-card h3 {
-    font-family: 'Sora', sans-serif;
-    font-size: 1.4rem;
-    margin-bottom: var(--space-sm);
-    color: var(--fg);
-    font-weight: 600;
-}
-
-/* The Rule section holds four cards — two in person, two from afar — as a 2×2 grid on desktop */
-.rule-section .meet-ways {
-    max-width: 1000px;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-@media (min-width: 769px) {
-    .rule-section .meet-ways-four {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* ==================== Map Section ==================== */
-.map-section {
-    text-align: center;
-    background: linear-gradient(180deg, transparent, rgba(167, 139, 250, 0.02), transparent);
-}
-
-.coming-badge {
-    display: inline-block;
-    padding: 8px 18px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 999px;
-    font-size: var(--small);
-    color: var(--dim);
-    margin-bottom: var(--space-md);
-    letter-spacing: 0.02em;
-}
-
-.map-section .safety-list,
-.privacy-section .safety-list {
-    text-align: left;
-}
-
-/* ==================== Privacy Section ==================== */
-.privacy-section {
-    background: rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.01em;
 }
 
 /* ==================== Responsive Design ==================== */
@@ -835,17 +238,8 @@ section {
         padding: 16px var(--container-padding);
     }
 
-    .nav-brand {
-        font-size: 14px;
-    }
-
-    .hero {
-        min-height: 75vh;
-        padding: calc(var(--space-xl) + 20px) 0 var(--space-xl);
-    }
-
-    .hero-logo {
-        height: 80px;
+    .logo-img {
+        height: 52px;
     }
 
     .footer-content {
@@ -856,14 +250,6 @@ section {
 
     .footer-links {
         justify-content: center;
-    }
-
-    .removed-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .meet-ways {
-        grid-template-columns: 1fr;
     }
 }
 
@@ -876,15 +262,6 @@ section {
         width: 100%;
         padding: 14px 24px;
     }
-
-    .store-soon {
-        width: 100%;
-    }
-}
-
-/* ==================== Dark Mode Preference ==================== */
-@media (prefers-color-scheme: light) {
-    /* Keep dark theme regardless - this is intentional */
 }
 
 /* ==================== Transparency & Contrast Preferences ==================== */
@@ -902,13 +279,7 @@ section {
         --dim: #B9BEC9;
     }
 
-    .meet-card,
-    .feed-feature,
-    .removed-item,
-    .store-soon,
-    .download-note,
-    .nav-cta,
-    .coming-badge {
+    .nav-back {
         border-color: rgba(255, 255, 255, 0.35);
     }
 }

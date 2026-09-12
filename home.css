@@ -254,11 +254,65 @@ section {
     background: var(--accent-soft);
 }
 
+/* 14px gap: Apple asks for clear space of a quarter of the badge's height around it */
 .store-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
-    gap: 12px;
+    gap: 14px;
+}
+
+/* Apple's official badge, unmodified (at least 40px tall on screen, per Apple's guidelines) */
+.store-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 10px;
+    transition: opacity var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+
+.store-badge img {
+    width: auto;
+    height: 54px;
+}
+
+.store-badge:hover {
+    opacity: 0.85;
+}
+
+.store-badge:active {
+    transform: scale(0.97);
+}
+
+/* Desktop QR in the download card — only where there's a mouse and room (not on phones/tablets) */
+.download-qr {
+    display: none;
+}
+
+@media (min-width: 961px) and (hover: hover) {
+    .download-qr {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        width: fit-content;
+        margin: 32px auto 0;
+        padding: 12px 20px 12px 12px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.02);
+        text-align: left;
+    }
+
+    .download-qr img {
+        width: 112px;
+        height: 112px;
+        border-radius: 10px;
+    }
+
+    .download-qr figcaption {
+        max-width: 220px;
+        font-size: 0.875rem;
+        color: var(--dim);
+    }
 }
 
 .availability {
@@ -1554,8 +1608,10 @@ section {
         min-height: 480px;
     }
 
-    .store-actions .btn {
-        width: 100%;
+    /* Badge and "coming soon" pill stack and centre — the badge keeps its own proportions */
+    .store-actions {
+        flex-direction: column;
+        align-items: center;
     }
 
     .cipher {
